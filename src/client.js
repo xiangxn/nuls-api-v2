@@ -68,7 +68,7 @@ export class JsonRpcClient {
                     } else if ("success" in response.data && !response.data.success) {
                         throw new Error(`JSON-RPC Error: ${JSON.stringify(response.data.data)}`);
                     } else if ("error" in response.data) {
-                        throw new Error(`JSON-RPC Error: ${response.data.error.message}`);
+                        throw new Error(`JSON-RPC Error: ${response.data.error.data}`);
                     }
                 }
             } catch (error) {
