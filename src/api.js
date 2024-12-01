@@ -80,6 +80,10 @@ export class NULSAPI {
         return await this.client.call("getTx", [this.chainId, txHash]);
     }
 
+    async getContractTxResult(txHash) {
+        return await this.client.call("getContractTxResult", [this.chainId, txHash]);
+    }
+
     /**
      * 验证交易
      * 目前在测试网调用失败
