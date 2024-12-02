@@ -84,6 +84,16 @@ export class NULSAPI {
         return await this.client.call("getContractTxResult", [this.chainId, txHash]);
     }
 
+    async getContractTxResultList(txHashs) {
+        let hs = [];
+        if (Array.isArray(txHashs)) {
+            hs = txHashs;
+        } else {
+            hs = [txHashs];
+        }
+        return await this.client.call("getContractTxResultList", [this.chainId, hs]);
+    }
+
     /**
      * 验证交易
      * 目前在测试网调用失败
