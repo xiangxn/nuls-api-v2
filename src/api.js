@@ -9,8 +9,8 @@ const Elliptic = elliptic.ec;
 const ec = new Elliptic("secp256k1");
 
 export class NULSAPI {
-    constructor({ rpcURL, sender, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null }) {
-        this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent });
+    constructor({ rpcURL, sender, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
+        this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });
         this.chainId = isBeta ? 2 : 1;
         if (chainId) {
             this.chainId = chainId;
