@@ -8,7 +8,7 @@ export class JsonRpcClient {
      * @param {number} [maxRetries=3] - 最大重试次数
      * @param {number} [retryDelay=1000] - 每次重试之间的延迟时间（毫秒）
      */
-    constructor(url, proxy = null, maxRetries = 3, retryDelay = 1000) {
+    constructor({ url, proxy = null, maxRetries = 3, retryDelay = 1000, httpsAgent = null }) {
         if (!url) {
             throw new Error("URL is required to create a JsonRpcClient");
         }
@@ -27,6 +27,8 @@ export class JsonRpcClient {
         };
         if (proxy && "host" in proxy && "port" in proxy) {
             config = Object.assign(config, { proxy });
+        } else if (httpsAgent) {
+            config = Object.assign(config, { httpsAgent });
         }
         // console.log(config)
         this.client = axios.create(config);
