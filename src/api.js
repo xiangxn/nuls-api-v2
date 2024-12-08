@@ -44,7 +44,7 @@ export class NULSAPI {
      * @returns 
      */
     async getAccount(address) {
-        return getResult(await this.client.call("getAccount", [this.chainId, address]));
+        return this.getResult(await this.client.call("getAccount", [this.chainId, address]));
     }
 
     /**
@@ -52,51 +52,51 @@ export class NULSAPI {
      * @returns 
      */
     async getInfo() {
-        return getResult(await this.client.call("getInfo", [this.chainId]));
+        return this.getResult(await this.client.call("getInfo", [this.chainId]));
     }
 
     async getAccountBalance(address, assetChainId = 1, assetId = 1) {
-        return getResult(await this.client.call("getAccountBalance", [this.chainId, assetChainId, assetId, address]));
+        return this.getResult(await this.client.call("getAccountBalance", [this.chainId, assetChainId, assetId, address]));
     }
 
     async getNetworkInfo() {
-        return getResult(await this.client.call("getNetworkInfo"));
+        return this.getResult(await this.client.call("getNetworkInfo"));
     }
 
     async getHeaderByHeight(blockHeight) {
-        return getResult(await this.client.call("getHeaderByHeight", [this.chainId, blockHeight]));
+        return this.getResult(await this.client.call("getHeaderByHeight", [this.chainId, blockHeight]));
     }
 
     async getHeaderByHash(hash) {
-        return getResult(await this.client.call("getHeaderByHash", [this.chainId, hash]));
+        return this.getResult(await this.client.call("getHeaderByHash", [this.chainId, hash]));
     }
 
     async getBestBlockHeader() {
-        return getResult(await this.client.call("getBestBlockHeader", [this.chainId]));
+        return this.getResult(await this.client.call("getBestBlockHeader", [this.chainId]));
     }
 
     async getBestBlock() {
-        return getResult(await this.client.call("getBestBlock", [this.chainId]));
+        return this.getResult(await this.client.call("getBestBlock", [this.chainId]));
     }
 
     async getBlockByHeight(blockHeight) {
-        return getResult(await this.client.call("getBlockByHeight", [this.chainId, blockHeight]));
+        return this.getResult(await this.client.call("getBlockByHeight", [this.chainId, blockHeight]));
     }
 
     async getBlockByHash(hash) {
-        return getResult(await this.client.call("getBlockByHash", [this.chainId, hash]));
+        return this.getResult(await this.client.call("getBlockByHash", [this.chainId, hash]));
     }
 
     async getLatestHeight() {
-        return getResult(await this.client.call("getLatestHeight", [this.chainId]));
+        return this.getResult(await this.client.call("getLatestHeight", [this.chainId]));
     }
 
     async getTx(txHash) {
-        return getResult(await this.client.call("getTx", [this.chainId, txHash]));
+        return this.getResult(await this.client.call("getTx", [this.chainId, txHash]));
     }
 
     async getContractTxResult(txHash) {
-        return getResult(await this.client.call("getContractTxResult", [this.chainId, txHash]));
+        return this.getResult(await this.client.call("getContractTxResult", [this.chainId, txHash]));
     }
 
     async getContractTxResultList(txHashs) {
@@ -106,7 +106,7 @@ export class NULSAPI {
         } else {
             hs = [txHashs];
         }
-        return getResult(await this.client.call("getContractTxResultList", [this.chainId, hs]));
+        return this.getResult(await this.client.call("getContractTxResultList", [this.chainId, hs]));
     }
 
     /**
@@ -116,27 +116,27 @@ export class NULSAPI {
      * @returns 
      */
     async validateTx(txHex) {
-        return getResult(await this.client.call("validateTx", [this.chainId, txHex]));
+        return this.getResult(await this.client.call("validateTx", [this.chainId, txHex]));
     }
 
     async broadcastTx(txHex) {
-        return getResult(await this.client.call("broadcastTx", [this.chainId, txHex]));
+        return this.getResult(await this.client.call("broadcastTx", [this.chainId, txHex]));
     }
 
     async sendCrossTx(txHex) {
-        return getResult(await this.client.call("sendCrossTx", [8, txHex]));
+        return this.getResult(await this.client.call("sendCrossTx", [8, txHex]));
     }
 
     async getContract(contractAddress) {
-        return getResult(await this.client.call("getContract", [this.chainId, contractAddress]));
+        return this.getResult(await this.client.call("getContract", [this.chainId, contractAddress]));
     }
 
     async invokeView(contractAddress, methodName, methodDesc = null, args = []) {
-        return getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]));
+        return this.getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]));
     }
 
     async getContractMethodArgsTypes(contractAddress, methodName, methodDesc = null) {
-        return getResult(await this.client.call("getContractMethodArgsTypes", [this.chainId, contractAddress, methodName, methodDesc]));
+        return this.getResult(await this.client.call("getContractMethodArgsTypes", [this.chainId, contractAddress, methodName, methodDesc]));
     }
 
     async imputedContractCallGas({ value = "0", contractAddress, methodName, methodDesc = null, args = null, multyAssetArray = null }) {
@@ -149,7 +149,7 @@ export class NULSAPI {
             parms.push(multyAssets);
         }
         // console.log("parms:", parms)
-        return getResult(await this.client.call("imputedContractCallGas", parms));
+        return this.getResult(await this.client.call("imputedContractCallGas", parms));
     }
 
     async contractCallOffline({ contractAddress, methodName, methodDesc = null, args = [], remark = null, value = 0, multyAssetArray = null }) {
@@ -165,7 +165,7 @@ export class NULSAPI {
         if (multyAssetArray) {
             parms.push(multyAssetArray);
         }
-        return getResult(await this.client.call("contractCallOffline", parms));
+        return this.getResult(await this.client.call("contractCallOffline", parms));
     }
 
     async validateContractCall({ contractAddress, methodName, methodDesc = null, args = [], value = "0", multyAssetArray = null, gasLimit, price }) {
@@ -173,7 +173,7 @@ export class NULSAPI {
         if (multyAssetArray) {
             parms.push(multyAssetArray);
         }
-        return getResult(await this.client.call("validateContractCall", parms));
+        return this.getResult(await this.client.call("validateContractCall", parms));
     }
 
     getPublic(privateKey) {
