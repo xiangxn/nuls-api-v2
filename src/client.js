@@ -68,11 +68,11 @@ export class JsonRpcClient {
                 // console.log(response);
                 if (response.status == 200) {
                     if ("result" in response.data) {
-                        return response.data.result; // 成功返回结果
+                        return { result: response.data.result }; // 成功返回结果
                     } else if ("success" in response.data && !response.data.success) {
-                        throw new Error(`JSON-RPC Error: ${JSON.stringify(response.data.data)}`);
+                        return { error: response.data.data }
                     } else if ("error" in response.data) {
-                        throw new Error(`JSON-RPC Error: ${response.data.error.data}`);
+                        return { error: response.data.error.data }
                     }
                 }
             } catch (error) {

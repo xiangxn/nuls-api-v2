@@ -22,13 +22,29 @@ export class NULSAPI {
         }
     }
 
+    getResult(res) {
+        if ("result" in res) {
+            if (typeof res.result == "string") {
+                try {
+                    return JSON.parse(res.result);
+                } catch {
+                    return res.result;
+                }
+            }
+            return res.result;
+        } else if ("error" in res) {
+            throw res.error;
+        }
+        return null;
+    }
+
     /**
      * public service method
      * @param {String} address 
      * @returns 
      */
     async getAccount(address) {
-        return await this.client.call("getAccount", [this.chainId, address]);
+        return getResult(await this.client.call("getAccount", [this.chainId, address]));
     }
 
     /**
@@ -36,52 +52,51 @@ export class NULSAPI {
      * @returns 
      */
     async getInfo() {
-        return await this.client.call("getInfo", [this.chainId]);
+        return getResult(await this.client.call("getInfo", [this.chainId]));
     }
 
     async getAccountBalance(address, assetChainId = 1, assetId = 1) {
-        const result = await this.client.call("getAccountBalance", [this.chainId, assetChainId, assetId, address])
-        return result;
+        return getResult(await this.client.call("getAccountBalance", [this.chainId, assetChainId, assetId, address]));
     }
 
     async getNetworkInfo() {
-        return await this.client.call("getNetworkInfo");
+        return getResult(await this.client.call("getNetworkInfo"));
     }
 
     async getHeaderByHeight(blockHeight) {
-        return await this.client.call("getHeaderByHeight", [this.chainId, blockHeight]);
+        return getResult(await this.client.call("getHeaderByHeight", [this.chainId, blockHeight]));
     }
 
     async getHeaderByHash(hash) {
-        return await this.client.call("getHeaderByHash", [this.chainId, hash]);
+        return getResult(await this.client.call("getHeaderByHash", [this.chainId, hash]));
     }
 
     async getBestBlockHeader() {
-        return await this.client.call("getBestBlockHeader", [this.chainId]);
+        return getResult(await this.client.call("getBestBlockHeader", [this.chainId]));
     }
 
     async getBestBlock() {
-        return await this.client.call("getBestBlock", [this.chainId]);
+        return getResult(await this.client.call("getBestBlock", [this.chainId]));
     }
 
     async getBlockByHeight(blockHeight) {
-        return await this.client.call("getBlockByHeight", [this.chainId, blockHeight]);
+        return getResult(await this.client.call("getBlockByHeight", [this.chainId, blockHeight]));
     }
 
     async getBlockByHash(hash) {
-        return await this.client.call("getBlockByHash", [this.chainId, hash]);
+        return getResult(await this.client.call("getBlockByHash", [this.chainId, hash]));
     }
 
     async getLatestHeight() {
-        return await this.client.call("getLatestHeight", [this.chainId]);
+        return getResult(await this.client.call("getLatestHeight", [this.chainId]));
     }
 
     async getTx(txHash) {
-        return await this.client.call("getTx", [this.chainId, txHash]);
+        return getResult(await this.client.call("getTx", [this.chainId, txHash]));
     }
 
     async getContractTxResult(txHash) {
-        return await this.client.call("getContractTxResult", [this.chainId, txHash]);
+        return getResult(await this.client.call("getContractTxResult", [this.chainId, txHash]));
     }
 
     async getContractTxResultList(txHashs) {
@@ -91,7 +106,7 @@ export class NULSAPI {
         } else {
             hs = [txHashs];
         }
-        return await this.client.call("getContractTxResultList", [this.chainId, hs]);
+        return getResult(await this.client.call("getContractTxResultList", [this.chainId, hs]));
     }
 
     /**
@@ -101,35 +116,27 @@ export class NULSAPI {
      * @returns 
      */
     async validateTx(txHex) {
-        return await this.client.call("validateTx", [this.chainId, txHex]);
+        return getResult(await this.client.call("validateTx", [this.chainId, txHex]));
     }
 
     async broadcastTx(txHex) {
-        return await this.client.call("broadcastTx", [this.chainId, txHex]);
+        return getResult(await this.client.call("broadcastTx", [this.chainId, txHex]));
     }
 
     async sendCrossTx(txHex) {
-        return await this.client.call("sendCrossTx", [8, txHex]);
+        return getResult(await this.client.call("sendCrossTx", [8, txHex]));
     }
 
     async getContract(contractAddress) {
-        return await this.client.call("getContract", [this.chainId, contractAddress]);
+        return getResult(await this.client.call("getContract", [this.chainId, contractAddress]));
     }
 
     async invokeView(contractAddress, methodName, methodDesc = null, args = []) {
-        let res = await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]);
-        if ("result" in res) {
-            try {
-                return JSON.parse(res.result);
-            } catch {
-                return res.result;
-            }
-        }
-        return res;
+        return getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]));
     }
 
     async getContractMethodArgsTypes(contractAddress, methodName, methodDesc = null) {
-        return await this.client.call("getContractMethodArgsTypes", [this.chainId, contractAddress, methodName, methodDesc]);
+        return getResult(await this.client.call("getContractMethodArgsTypes", [this.chainId, contractAddress, methodName, methodDesc]));
     }
 
     async imputedContractCallGas({ value = "0", contractAddress, methodName, methodDesc = null, args = null, multyAssetArray = null }) {
@@ -142,7 +149,7 @@ export class NULSAPI {
             parms.push(multyAssets);
         }
         // console.log("parms:", parms)
-        return await this.client.call("imputedContractCallGas", parms);
+        return getResult(await this.client.call("imputedContractCallGas", parms));
     }
 
     async contractCallOffline({ contractAddress, methodName, methodDesc = null, args = [], remark = null, value = 0, multyAssetArray = null }) {
@@ -158,7 +165,7 @@ export class NULSAPI {
         if (multyAssetArray) {
             parms.push(multyAssetArray);
         }
-        return await this.client.call("contractCallOffline", parms);
+        return getResult(await this.client.call("contractCallOffline", parms));
     }
 
     async validateContractCall({ contractAddress, methodName, methodDesc = null, args = [], value = "0", multyAssetArray = null, gasLimit, price }) {
@@ -166,7 +173,7 @@ export class NULSAPI {
         if (multyAssetArray) {
             parms.push(multyAssetArray);
         }
-        return await this.client.call("validateContractCall", parms);
+        return getResult(await this.client.call("validateContractCall", parms));
     }
 
     getPublic(privateKey) {
