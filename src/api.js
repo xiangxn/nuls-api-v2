@@ -30,7 +30,7 @@ export class NULSAPI {
     account(pri) {
         let instance = deepCloneInstance(this);
         instance.accountPri = pri;
-        accountPri.sender = instance.getAddress();
+        instance.sender = instance.getAddress();
         return instance;
     }
 
