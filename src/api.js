@@ -1,25 +1,42 @@
 import BigNumber from "bignumber.js";
 import { JsonRpcClient } from "./client.js";
 import config from "./config.js";
-import { makeCallData, makeInputsOrOutputs, countFee } from "./utils/utils.js";
+import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance } from "./utils/utils.js";
 import nuls from "nuls-sdk-js/lib/index.js";
-import elliptic from "elliptic";
+import elliptic, { utils } from "elliptic";
 
 const Elliptic = elliptic.ec;
 const ec = new Elliptic("secp256k1");
 
 export class NULSAPI {
-    constructor({ rpcURL, sender, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
+    constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
         this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });
         this.chainId = isBeta ? 2 : 1;
         if (chainId) {
             this.chainId = chainId;
         }
         this.sender = sender;
+        this.accountPri = accountPri;
+        if (this.accountPri) {
+            this.sender = this.getAddress();
+        }
         this.assetId = 1;
         if (assetId) {
             this.assetId = assetId;
         }
+        this.prefix = prefix;
+    }
+
+    account(pri) {
+        let instance = deepCloneInstance(this);
+        instance.accountPri = pri;
+        accountPri.sender = instance.getAddress();
+        return instance;
+    }
+
+    getAddress() {
+        let pubKey = this.getPublic(this.accountPri);
+        return nuls.getAddressByPub(this.chainId, this.assetId, pubKey, this.prefix);
     }
 
     getResult(res) {
@@ -209,8 +226,8 @@ export class NULSAPI {
         return multyAssetArray;
     }
 
-    async callContract(pri, callInfo, remark, multyAssetArray, nulsValueToOthers) {
-        const pub = this.getPublic(pri);
+    async callContract(callInfo, remark, multyAssetArray, nulsValueToOthers) {
+        const pub = this.getPublic(this.accountPri);
         // console.log("callContract......", pub)
         const [mainBalanceInfo, argsType, gasLimitInfo] = await Promise.all([
             this.getAccountBalance(this.sender, this.chainId),
@@ -248,7 +265,7 @@ export class NULSAPI {
         let inOrOutputs = makeInputsOrOutputs(transferInfo, mainBalanceInfo, multyAssets, nulsValueToOthers);
         // console.log("inOrOutputs:", inOrOutputs);
         let tAssemble = nuls.transactionAssemble(inOrOutputs.inputs, inOrOutputs.outputs, remark, 16, callData);
-        let txhex = nuls.transactionSerialize(pri, pub, tAssemble);
+        let txhex = nuls.transactionSerialize(this.accountPri, pub, tAssemble);
         // console.log("txhex:",txhex);
         let result = await this.validateTx(txhex);
         if ("value" in result) {
@@ -261,9 +278,9 @@ export class NULSAPI {
         return null;
     }
 
-    async transfer(pri, toAddress, value, remark, multyAssets) {
+    async transfer(toAddress, value, remark, multyAssets) {
         const _value = new BigNumber(value);
-        const pub = this.getPublic(pri);
+        const pub = this.getPublic(this.accountPri);
         let balanceInfo = await this.getAccountBalance(this.sender, this.chainId);
         let transferInfo = {
             fromAddress: this.sender,
@@ -287,7 +304,7 @@ export class NULSAPI {
             inOrOutputs = makeInputsOrOutputs(transferInfo, balanceInfo);
             tAssemble = nuls.transactionAssemble(inOrOutputs.inputs, inOrOutputs.outputs, remark, 2);
         }
-        let txhex = nuls.transactionSerialize(pri, pub, tAssemble);
+        let txhex = nuls.transactionSerialize(this.accountPri, pub, tAssemble);
         let result = await this.validateTx(txhex);
         if ("value" in result) {
             console.debug("validateTx Hash:", result.value);

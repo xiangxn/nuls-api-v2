@@ -171,3 +171,25 @@ export function countFee(tx, signatrueCount) {
     txSize += signatrueCount * 110;
     return 100000 * Math.ceil(txSize / 1024);
 }
+
+export function deepCloneInstance(instance) {
+    // 获取原型
+    const prototype = Object.getPrototypeOf(instance);
+
+    // 创建一个新的对象，保持原型链
+    const clone = Object.create(prototype);
+
+    // 深拷贝实例的自有属性
+    for (const key of Object.keys(instance)) {
+        const value = instance[key];
+
+        // 递归处理对象或数组
+        if (value && typeof value === 'object') {
+            clone[key] = deepCloneInstance(value); // 递归调用
+        } else {
+            clone[key] = value; // 基本类型直接复制
+        }
+    }
+
+    return clone;
+}
