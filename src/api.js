@@ -11,7 +11,7 @@ const ec = new Elliptic("secp256k1");
 export class NULSAPI {
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
         this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });
-        
+
         this.chainId = isBeta ? 2 : 1;
         if (chainId) {
             this.chainId = chainId;
@@ -155,11 +155,7 @@ export class NULSAPI {
     async invokeView(contractAddress, methodName, methodDesc = null, args = []) {
         let res = this.getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]));
         if (res) {
-            try {
-                return JSON.parse(res.result);
-            } catch {
-                return res.result;
-            }
+            return res.result;
         }
         return null;
     }
