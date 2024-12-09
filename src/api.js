@@ -11,20 +11,24 @@ const ec = new Elliptic("secp256k1");
 export class NULSAPI {
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
         this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });
+        
         this.chainId = isBeta ? 2 : 1;
         if (chainId) {
             this.chainId = chainId;
         }
-        this.sender = sender;
-        this.accountPri = accountPri;
-        if (this.accountPri) {
-            this.sender = this.getAddress();
-        }
+
         this.assetId = 1;
         if (assetId) {
             this.assetId = assetId;
         }
+
         this.prefix = prefix;
+        this.sender = sender;
+
+        this.accountPri = accountPri;
+        if (this.accountPri) {
+            this.sender = this.getAddress();
+        }
     }
 
     account(pri) {

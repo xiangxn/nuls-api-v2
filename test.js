@@ -11,7 +11,7 @@ let pri = 'ddddb7cb859a467fbe05d5034735de9e62ad06db6557b64d7c139b6db856b200';
 const testContract = "tNULSeBaNBpdDAztEm2FvCwaHrgGjA7VZJaMvA";
 
 const sdk = new NULSAPI({
-    isBeta: true, sender: address, rpcURL: "http://beta.api.nuls.io/jsonrpc",
+    isBeta: true, rpcURL: "http://beta.api.nuls.io/jsonrpc", accountPri: pri
     // proxy: { host: "127.0.0.1", port: 1087 }
 });
 
@@ -81,7 +81,7 @@ async function main() {
     //     value: 90000000
     // }]);
 
-    const result = await sdk.getAccountBalance(testContract, 5, 160);
+    // const result = await sdk.getAccountBalance(testContract, 5, 160);
 
     // const result = await sdk.transfer(pri, "tNULSeBaMo7JMx1mvKtgVFfPPvo73ZU5zVNXFU", 0, null, [{
     //     assetChainId: 5,
@@ -89,9 +89,12 @@ async function main() {
     //     value: 10000000
     // }]);
 
+    const addr = sdk.getAddress();
+    console.log("address:", addr,sdk.sender, addr === address);
 
 
-    console.log(result);
+
+    // console.log(result);
 }
 
 main();
