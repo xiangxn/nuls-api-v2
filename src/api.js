@@ -3,7 +3,7 @@ import { JsonRpcClient } from "./client.js";
 import config from "./config.js";
 import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance } from "./utils/utils.js";
 import nuls from "nuls-sdk-js/lib/index.js";
-import elliptic, { utils } from "elliptic";
+import elliptic from "elliptic";
 
 const Elliptic = elliptic.ec;
 const ec = new Elliptic("secp256k1");
