@@ -77,7 +77,8 @@ export class NULSAPI {
         return this.getResult(await this.client.call("getInfo", [this.chainId]));
     }
 
-    async getAccountBalance(address, assetChainId = 1, assetId = 1) {
+    async getAccountBalance(address, assetChainId = null, assetId = 1) {
+        if (assetChainId == null) assetChainId = this.chainId;
         return this.getResult(await this.client.call("getAccountBalance", [this.chainId, assetChainId, assetId, address]));
     }
 
