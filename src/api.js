@@ -43,8 +43,10 @@ export class NULSAPI {
         return nuls.getAddressByPub(this.chainId, this.assetId, pubKey, this.prefix);
     }
 
-    getResult(res) {
-        if ("result" in res) {
+    getResult(res, checkResult = true) {
+        if ("error" in res) {
+            throw res.error;
+        } else if (checkResult && "result" in res) {
             if (typeof res.result == "string") {
                 try {
                     return JSON.parse(res.result);
@@ -53,10 +55,9 @@ export class NULSAPI {
                 }
             }
             return res.result;
-        } else if ("error" in res) {
-            throw res.error;
+        } else {
+            return res;
         }
-        return null;
     }
 
     /**
@@ -117,7 +118,7 @@ export class NULSAPI {
     }
 
     async getContractTxResult(txHash) {
-        return this.getResult(await this.client.call("getContractTxResult", [this.chainId, txHash]));
+        return this.getResult(await this.client.call("getContractTxResult", [this.chainId, txHash]), false);
     }
 
     async getContractTxResultList(txHashs) {
