@@ -76,7 +76,7 @@ export class JsonRpcClient {
                     } else if ("success" in response.data && !response.data.success) {
                         return { error: response.data.data }
                     } else if ("error" in response.data) {
-                        return { error: response.data.error.data }
+                        return { error: response.data.error.message.replace("Data error;", "").replace("contract error - ", "") }
                     }
                 }
             } catch (error) {
