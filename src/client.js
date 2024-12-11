@@ -68,7 +68,11 @@ export class JsonRpcClient {
                 // console.log(response);
                 if (response.status == 200) {
                     if ("result" in response.data) {
-                        return { result: response.data.result }; // 成功返回结果
+                        if (typeof response.data.result === "object" && "result" in response.data.result) {
+                            return response.data.result;
+                        } else {
+                            return { result: response.data.result }; // 成功返回结果
+                        }
                     } else if ("success" in response.data && !response.data.success) {
                         return { error: response.data.data }
                     } else if ("error" in response.data) {

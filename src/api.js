@@ -153,11 +153,7 @@ export class NULSAPI {
     }
 
     async invokeView(contractAddress, methodName, methodDesc = null, args = []) {
-        let res = this.getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]));
-        if (res) {
-            return res.result;
-        }
-        return null;
+        return this.getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]));
     }
 
     async getContractMethodArgsTypes(contractAddress, methodName, methodDesc = null) {
