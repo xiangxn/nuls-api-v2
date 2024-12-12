@@ -1,12 +1,8 @@
 import BigNumber from "bignumber.js";
 import { JsonRpcClient } from "./client.js";
 import config from "./config.js";
-import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance } from "./utils/utils.js";
+import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance,getPublic } from "./utils/utils.js";
 import nuls from "nuls-sdk-js/lib/index.js";
-import elliptic from "elliptic";
-
-const Elliptic = elliptic.ec;
-const ec = new Elliptic("secp256k1");
 
 export class NULSAPI {
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
@@ -39,7 +35,7 @@ export class NULSAPI {
     }
 
     getAddress() {
-        let pubKey = this.getPublic(this.accountPri);
+        let pubKey = getPublic(this.accountPri);
         return nuls.getAddressByPub(this.chainId, this.assetId, pubKey, this.prefix);
     }
 
@@ -203,10 +199,6 @@ export class NULSAPI {
         return this.getResult(await this.client.call("validateContractCall", parms));
     }
 
-    getPublic(privateKey) {
-        return ec.keyFromPrivate(privateKey).getPublic(true, "hex");
-    }
-
     async updateMultyAsset(multyAssetArray) {
         if (multyAssetArray) {
             let length = multyAssetArray.length;
@@ -229,7 +221,7 @@ export class NULSAPI {
     }
 
     async callContract(callInfo, remark, multyAssetArray, nulsValueToOthers) {
-        const pub = this.getPublic(this.accountPri);
+        const pub = getPublic(this.accountPri);
         // console.log("callContract......", pub)
         const [mainBalanceInfo, argsType, gasLimitInfo] = await Promise.all([
             this.getAccountBalance(this.sender, this.chainId),
@@ -282,7 +274,7 @@ export class NULSAPI {
 
     async transfer(toAddress, value, remark, multyAssets) {
         const _value = new BigNumber(value);
-        const pub = this.getPublic(this.accountPri);
+        const pub = getPublic(this.accountPri);
         let balanceInfo = await this.getAccountBalance(this.sender, this.chainId);
         let transferInfo = {
             fromAddress: this.sender,

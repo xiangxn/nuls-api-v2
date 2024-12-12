@@ -2,6 +2,9 @@
 
 // const JsonRpcClient = require("./client");
 import { NULSAPI } from "./src/api.js";
+import { signMessage, verifySign, hashMessage } from "./src/utils/utils.js";
+
+import sha3 from "js-sha3";
 
 const address = "tNULSeBaMshNPEnuqiDhMdSA4iNs6LMgjY6tcL";
 // 用户私钥
@@ -89,8 +92,22 @@ async function main() {
     //     value: 10000000
     // }]);
 
-    const addr = sdk.getAddress();
-    console.log("address:", addr,sdk.sender, addr === address);
+    // const addr = sdk.getAddress();
+    // console.log("address:", addr,sdk.sender, addr === address);
+
+    let message = "tNULSeBaMo7JMx1mvKtgVFfPPvo73ZU5zVNXFU";
+
+    let messageHash = hashMessage(message);
+    let m3 = sha3.keccak256(message);
+
+    console.log("messageHash:", messageHash, m3);
+
+    // messageHash = m3;
+
+    let sign = signMessage(messageHash, pri);
+    console.log("sign:", sign);
+    let ok = verifySign(messageHash, sign, sdk.getPublic(pri));
+    console.log("OK:", ok)
 
 
 
