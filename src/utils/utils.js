@@ -225,12 +225,12 @@ function utf8ToHex(input) {
 }
 
 export function hashMessage(message, skipPrefix = false) {
-    const messageHex = isHexStrict(message) ? message : utf8ToHex(message);
+    const messageHex = isHexStrict(`0x${message}`) ? message : utf8ToHex(message);
     if (skipPrefix) {
-        return sha3.keccak256(messageHex);
+        return sha3.keccak256(Buffer.from(messageHex, "hex"));
     } else {
         let prefix = utf8ToHex(`\u0019Ethereum Signed Message:\n${messageHex.length / 2}`);
-        return sha3.keccak256(`${prefix}${messageHex}`);
+        return sha3.keccak256(Buffer.from(`${prefix}${messageHex}`, "hex"));
     }
 }
 
@@ -297,4 +297,11 @@ export function verifySign(dataHex, signHex, pubHex) {
 
 export function getPublic(privateKey) {
     return ec.keyFromPrivate(privateKey).getPublic(true, "hex");
+}
+
+export function parseNULS(amount, decimals = 8) {
+    let a = new BigNumber(amount);
+    let b = a.times((new BigNumber(10)).pow(decimals));
+    // return BigInt(b.toFixed(0));
+    return b.integerValue();
 }
