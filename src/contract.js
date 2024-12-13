@@ -42,7 +42,7 @@ export class Contract {
                         let multyAssetArray;
                         let nulsValueToOthers;
                         if (args[args.length - 1] && typeof args[args.length - 1] === "object") {
-                            let opt = args.pop();
+                            let opt = callInfo.args.pop();
                             if (method.payable && "value" in opt) {
                                 callInfo.value = opt.value;
                             }
