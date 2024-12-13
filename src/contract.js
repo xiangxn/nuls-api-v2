@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { Storage } from "./utils/storage.js";
 
 export class Contract {
@@ -20,7 +21,7 @@ export class Contract {
         }
         this.method = info.method;
         this.method.forEach(method => {
-            if (method.event === false && method.name !="<init>") {
+            if (method.event === false && method.name != "<init>") {
                 const functionName = method.name;
                 const functionDesc = method.desc;
                 const isView = method.view;
@@ -41,7 +42,8 @@ export class Contract {
                         let remark;
                         let multyAssetArray;
                         let nulsValueToOthers;
-                        if (args[args.length - 1] && typeof args[args.length - 1] === "object") {
+                        let lastArg = args[args.length - 1];
+                        if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber)) {
                             let opt = callInfo.args.pop();
                             if (method.payable && "value" in opt) {
                                 callInfo.value = opt.value;
