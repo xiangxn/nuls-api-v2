@@ -80,6 +80,14 @@ export class NULSAPI {
     }
 
     async getAccountBalance(address, assetChainId = null, assetId = 1) {
+        let obj = await this.getAccountBalanceObj(address, assetChainId, assetId);
+        if (obj) {
+            return new BigNumber(obj.balance);
+        }
+        return new BigNumber(0);
+    }
+
+    async getAccountBalanceObj(address, assetChainId = null, assetId = 1) {
         if (assetChainId == null) assetChainId = this.chainId;
         return this.getResult(await this.client.call("getAccountBalance", [this.chainId, assetChainId, assetId, address]));
     }
