@@ -10,6 +10,11 @@ export class Contract {
         this.method = [];
     }
 
+    connect(accountPri) {
+        this.api = this.api.account(accountPri);
+        return this;
+    }
+
     async init() {
         await this.storage.init();
         let info = this.storage.getItem(this.address);
