@@ -1,8 +1,9 @@
 import BigNumber from "bignumber.js";
 import { JsonRpcClient } from "./client.js";
 import config from "./config.js";
-import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance,getPublic } from "./utils/utils.js";
+import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance, getPublic } from "./utils/utils.js";
 import nuls from "nuls-sdk-js/lib/index.js";
+import { Contract } from "./contract.js";
 
 export class NULSAPI {
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
@@ -40,6 +41,7 @@ export class NULSAPI {
     }
 
     getResult(res, checkResult = true) {
+        // console.log("res:",res);
         if ("error" in res) {
             throw res.error;
         } else if (checkResult && "result" in res) {
@@ -308,6 +310,12 @@ export class NULSAPI {
             }
         }
         return null;
+    }
+
+    async contract(address) {
+        const contract = new Contract(address, this);
+        await contract.init();
+        return contract;
     }
 
 }

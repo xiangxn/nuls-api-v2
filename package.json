@@ -11,6 +11,7 @@
     "axios": "^1.7.7",
     "bignumber.js": "^9.1.2",
     "js-sha3": "^0.9.3",
+    "node-localstorage": "^3.0.5",
     "nuls-sdk-js": "^2.5.5"
   }
 }

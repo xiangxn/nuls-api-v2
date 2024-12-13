@@ -95,23 +95,33 @@ async function main() {
     // const addr = sdk.getAddress();
     // console.log("address:", addr,sdk.sender, addr === address);
 
-    let message = "tNULSeBaMo7JMx1mvKtgVFfPPvo73ZU5zVNXFU";
+    // let message = "tNULSeBaMo7JMx1mvKtgVFfPPvo73ZU5zVNXFU";
 
-    let messageHash = hashMessage(message);
-    let m3 = sha3.keccak256(message);
+    // let messageHash = hashMessage(message);
+    // let m3 = sha3.keccak256(message);
 
-    console.log("messageHash:", messageHash, m3);
+    // console.log("messageHash:", messageHash, m3);
 
-    // messageHash = m3;
+    // // messageHash = m3;
 
-    let sign = signMessage(messageHash, pri);
-    console.log("sign:", sign);
-    let ok = verifySign(messageHash, sign, sdk.getPublic(pri));
-    console.log("OK:", ok)
+    // let sign = signMessage(messageHash, pri);
+    // console.log("sign:", sign);
+    // let ok = verifySign(messageHash, sign, sdk.getPublic(pri));
+    // console.log("OK:", ok)
+
 
 
 
     // console.log(result);
+
+    await getContract();
+}
+
+async function getContract() {
+    let contract = await sdk.contract("tNULSeBaNBNwtQqt6zF7pMpkC8JtyJTbktfHLx");
+    // console.log(contract);
+    let res = await contract.name();
+    console.log("res:", res);
 }
 
 main();
