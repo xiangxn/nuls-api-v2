@@ -2,7 +2,9 @@
 
 // const JsonRpcClient = require("./client");
 import { NULSAPI } from "./src/api.js";
-import { signMessage, verifySign, hashMessage } from "./src/utils/utils.js";
+import { signMessage, verifySign, hashMessage, parseNULS } from "./src/utils/utils.js";
+
+import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
 import sha3 from "js-sha3";
 
@@ -114,7 +116,8 @@ async function main() {
 
     // console.log(result);
 
-    await getContract();
+    // await getContract();
+    sign();
 }
 
 async function getContract() {
@@ -122,6 +125,25 @@ async function getContract() {
     // console.log(contract);
     let res = await contract.name();
     console.log("res:", res);
+}
+
+function sign() {
+    const pri = "cd25f84c433de2824acc71ba1cbf875f427fd5a832e7ac3e6d84cf00c76ded5f";
+    const pub = "026c51ef77f20de89defcb97a125921c637c06cbcfa0bd1d38e3506243333b007b";
+    let tokenAddress = "tNULSeBaN5iBsxxpx1QH4xfwpyAd9fe3a8TAA4";
+    let orderId = "23059723523125629";
+    let user = "tNULSeBaMkXPjhPi9T5RMW4Nnbvf7gog1HtWgR";
+    let amount = parseNULS(10000);
+    const args = nulsdk.newProgramEncodePacked([tokenAddress, orderId, user, amount]);
+    const hash = hashMessage(args);
+    console.log("hash:", hash);
+
+    const signature = signMessage(hash, pri);
+    console.log("signature:", signature)
+
+    const result = verifySign(hash, signature, pub);
+    const result2 = nulsdk.verifySign(hash, signature, pub);
+    console.log("result:", result, result2);
 }
 
 main();

@@ -209,6 +209,22 @@ function encodeInteger(buffer) {
     return Buffer.concat([Buffer.from([0x02, buffer.length]), buffer]);
 }
 
+function encodeLength(length) {
+    if (length <= 127) {
+        return Buffer.from([length]);
+    } else {
+        const lengthBytes = [];
+        while (length > 0) {
+            lengthBytes.unshift(length & 0xff);
+            length >>= 8;
+        }
+        return Buffer.concat([
+            Buffer.from([0x80 | lengthBytes.length]), // 多字节长度标识
+            Buffer.from(lengthBytes),
+        ]);
+    }
+}
+
 function isHexStrict(hex) {
     return typeof hex === 'string' && /^((-)?0x[0-9a-f]+|(0x))$/i.test(hex);
 }
@@ -236,17 +252,21 @@ export function hashMessage(message, skipPrefix = false) {
 
 export function signMessage(dataHash, priHex) {
     const key = ec.keyFromPrivate(priHex, 'hex');
-    const signature = key.sign(dataHash, 'hex');
-    const rBuffer = Buffer.from(signature.r.toString('hex'), 'hex');    // signature.r.toBuffer()
-    const sBuffer = Buffer.from(signature.s.toString('hex'), 'hex');    // signature.s.toBuffer()
+    const signature = key.sign(Buffer.from(dataHash, "hex"));
+    // 规范化 s 值
+    if (signature.s.cmp(ec.n.shrn(1)) > 0) {
+        signature.s = ec.n.sub(signature.s);
+    }
     // 移除 r 和 s 的前导零，确保正数表示
-    const rEncoded = encodeInteger(rBuffer);
-    const sEncoded = encodeInteger(sBuffer);
-    // 计算总长度
+    const rEncoded = encodeInteger(signature.r.toBuffer());
+    const sEncoded = encodeInteger(signature.s.toBuffer());
+    // 计算总长度并处理多字节长度
     const totalLength = rEncoded.length + sEncoded.length;
-    // 生成序列
+    const lengthEncoded = encodeLength(totalLength);
+    // 生成最终序列
     const sequence = Buffer.concat([
-        Buffer.from([0x30, totalLength]), // 序列类型和长度
+        Buffer.from([0x30]), // 序列类型标识
+        lengthEncoded,
         rEncoded,
         sEncoded,
     ]);
@@ -254,18 +274,19 @@ export function signMessage(dataHash, priHex) {
 }
 
 export function verifySign(dataHex, signHex, pubHex) {
-    // return sdk.verifySign(dataHex, signHex, pubHex);
-    // 创建公钥实例
     const key = ec.keyFromPublic(pubHex, 'hex');
 
     // 解码 ASN.1 格式签名
     const derToRS = (hex) => {
         const buf = Buffer.from(hex, 'hex');
+
         if (buf[0] !== 0x30) {
             throw new Error("Invalid DER encoding: missing SEQUENCE header");
         }
 
         let index = 2; // 跳过 0x30 和 SEQUENCE 的总长度
+
+        // Decode r
         if (buf[index] !== 0x02) {
             throw new Error("Invalid DER encoding: missing INTEGER header for r");
         }
@@ -273,9 +294,15 @@ export function verifySign(dataHex, signHex, pubHex) {
         index++; // 跳过 0x02 (r 的 INTEGER 标记)
         const rLength = buf[index];
         index++; // 跳过 r 的长度字节
-        const r = buf.subarray(index, index + rLength).toString('hex');
+        let r = buf.subarray(index, index + rLength);
         index += rLength;
 
+        // 去掉前导零（只在必要时）
+        if (r[0] === 0x00) {
+            r = r.subarray(1);
+        }
+
+        // Decode s
         if (buf[index] !== 0x02) {
             throw new Error("Invalid DER encoding: missing INTEGER header for s");
         }
@@ -283,16 +310,37 @@ export function verifySign(dataHex, signHex, pubHex) {
         index++; // 跳过 0x02 (s 的 INTEGER 标记)
         const sLength = buf[index];
         index++; // 跳过 s 的长度字节
-        const s = buf.subarray(index, index + sLength).toString('hex');
+        let s = buf.subarray(index, index + sLength);
 
-        return { r, s };
+        // 去掉前导零（只在必要时）
+        if (s[0] === 0x00) {
+            s = s.subarray(1);
+        }
+
+        // 返回结果
+        return { r: r.toString('hex'), s: s.toString('hex') };
     };
 
-    const rs = derToRS(signHex);
-    console.log("rs:", rs);
+    // 规范化 s 值
+    const lowS = (s, curveOrder) => {
+        const bigS = new ec.n.constructor(s, 16); // 将 s 转换为大整数
+        if (bigS.cmp(curveOrder.shrn(1)) > 0) {  // 如果 s > n / 2
+            return curveOrder.sub(bigS).toString(16); // 返回 n - s
+        }
+        return s; // 保持原始 s
+    };
 
-    // 验证签名
-    return key.verify(Buffer.from(dataHex, 'hex'), rs);
+    try {
+        const rs = derToRS(signHex);
+        rs.s = lowS(rs.s, ec.n); // 确保 s 是规范化的低值
+        // console.log("rs:", rs);
+
+        // 验证签名
+        return key.verify(Buffer.from(dataHex, 'hex'), rs);
+    } catch (err) {
+        console.error("Verification failed:", err.message);
+        return false;
+    }
 }
 
 export function getPublic(privateKey) {
