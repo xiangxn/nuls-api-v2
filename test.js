@@ -1,7 +1,7 @@
 // const nulsSdkJs = require("nuls-sdk-js");
 
 // const JsonRpcClient = require("./client");
-import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS } from "./src/api.js";
+import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
@@ -116,7 +116,10 @@ async function main() {
     // console.log(result);
 
     // await getContract();
-    sign();
+
+    // sign();
+
+    testAddress();
 }
 
 async function getContract() {
@@ -124,6 +127,14 @@ async function getContract() {
     // console.log(contract);
     let res = await contract.name();
     console.log("res:", res);
+}
+
+function testAddress(){
+    const pub = "026c51ef77f20de89defcb97a125921c637c06cbcfa0bd1d38e3506243333b007b";
+    console.log("\n");
+    let addr = getStringAddressBase(2, 1, null,pub);
+    let addr2 = getAddressByPub(2,1,pub);
+    console.log(addr,addr2);
 }
 
 function sign() {

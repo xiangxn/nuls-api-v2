@@ -1,6 +1,8 @@
 import { BigNumber } from "bignumber.js";
 import config from "../config.js";
 import sha3 from "js-sha3";
+import bs58 from "bs58";
+import CryptoJS from "crypto-js";
 
 import elliptic from "elliptic";
 
@@ -352,4 +354,65 @@ export function parseNULS(amount, decimals = 8) {
     let b = a.times((new BigNumber(10)).pow(decimals));
     // return BigInt(b.toFixed(0));
     return b.integerValue();
+}
+
+export function getAddressByPub(chainId, assetId, pub, prefix) {
+    return getStringAddressBase(chainId, assetId, null, pub, prefix);
+}
+
+export function getBytesAddress(stringAddress) {
+    stringAddress = '' + stringAddress;
+    if (stringAddress.startsWith('NULS')) {
+        stringAddress = stringAddress.substring(5);
+    } else if (stringAddress.startsWith('tNULS')) {
+        stringAddress = stringAddress.substring(6);
+    } else {
+        for (let i = 0; i < stringAddress.length; i++) {
+            let val = stringAddress.charAt(i);
+            if (val.charCodeAt(0) >= 97) {
+                stringAddress = stringAddress.substring(i + 1);
+                break;
+            }
+        }
+    }
+    let bytes = bs58.decode(stringAddress);
+    return bytes.slice(0, bytes.length - 1);
+}
+
+export function getStringAddressBase(chainId, type, pri, pub, prefix) {
+    if (pri && !pub) {
+        pub = getPublic(pri);
+    }
+    var pubBuffer = Buffer.from(pub, 'hex');
+    var val = new BigNumber(pub, 16);
+    if (val.lte(1)) {
+        throw "public key is wrong!";
+    }
+
+    var sha = CryptoJS.SHA256(CryptoJS.lib.WordArray.create(pubBuffer));
+    var pubkeyHash = CryptoJS.RIPEMD160(sha).toString(CryptoJS.enc.Hex);
+    var chainIdBuffer = Buffer.concat([Buffer.from([0xFF & chainId >> 0]), Buffer.from([0xFF & chainId >> 8])]);
+    var addrBuffer = Buffer.concat([chainIdBuffer, Buffer.from([type]), Buffer.from(pubkeyHash, "hex")]);
+    var xor = 0x00;
+    var temp = "";
+    var tempBuffer = Buffer.allocUnsafe(addrBuffer.length + 1);
+    for (var i = 0; i < addrBuffer.length; i++) {
+        temp = addrBuffer[i];
+        temp = temp > 127 ? temp - 256 : temp;
+        tempBuffer[i] = temp;
+        xor ^= temp;
+    }
+    tempBuffer[addrBuffer.length] = xor;
+
+    if (1 === chainId) {
+        prefix = 'NULS';
+    } else if (2 === chainId) {
+        prefix = "tNULS";
+    } else if (prefix) {
+        prefix = prefix.toUpperCase();
+    } else {
+        prefix = bs58.encode(chainIdBuffer).toUpperCase();
+    }
+    var constant = ['a', 'b', 'c', 'd', 'e'];
+    return prefix + constant[prefix.length - 1] + bs58.encode(tempBuffer);
 }

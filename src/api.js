@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { JsonRpcClient } from "./client.js";
 import config from "./config.js";
-import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance, getPublic } from "./utils/utils.js";
+import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance, getPublic, getAddressByPub } from "./utils/utils.js";
 import nuls from "nuls-sdk-js/lib/index.js";
 import { Contract } from "./contract.js";
 
@@ -39,7 +39,7 @@ export class NULSAPI {
 
     getAddress() {
         let pubKey = getPublic(this.accountPri);
-        return nuls.getAddressByPub(this.chainId, this.assetId, pubKey, this.prefix);
+        return getAddressByPub(this.chainId, this.assetId, pubKey, this.prefix);
     }
 
     getResult(res, checkResult = true) {
