@@ -49,7 +49,7 @@ export class NULSAPI {
         } else if (checkResult && "result" in res) {
             if (typeof res.result == "string") {
                 try {
-                    if (/^\d+$/.test(res.result)) {
+                    if (/^-?\d+$/.test(res.result)) {
                         return new BigNumber(res.result);
                     } else {
                         return JSON.parse(res.result);
