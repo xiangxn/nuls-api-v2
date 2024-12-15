@@ -5,6 +5,8 @@ import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance, getPubl
 import nuls from "nuls-sdk-js/lib/index.js";
 import { Contract } from "./contract.js";
 
+export * from "./utils/utils.js";
+
 export class NULSAPI {
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
         this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });

@@ -1,8 +1,7 @@
 // const nulsSdkJs = require("nuls-sdk-js");
 
 // const JsonRpcClient = require("./client");
-import { NULSAPI } from "./src/api.js";
-import { signMessage, verifySign, hashMessage, parseNULS } from "./src/utils/utils.js";
+import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS } from "./src/api.js";
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
