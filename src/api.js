@@ -6,6 +6,7 @@ import nuls from "nuls-sdk-js/lib/index.js";
 import { Contract } from "./contract.js";
 
 export * from "./utils/utils.js";
+export * from "./utils/storage.js";
 
 export class NULSAPI {
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
