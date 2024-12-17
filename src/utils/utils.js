@@ -353,7 +353,13 @@ export function parseNULS(amount, decimals = 8) {
     let a = new BigNumber(amount);
     let b = a.times((new BigNumber(10)).pow(decimals));
     // return BigInt(b.toFixed(0));
-    return b.integerValue();
+    return b.integerValue(BigNumber.ROUND_DOWN);
+}
+
+export function fromNULS(amount, decimals = 8) {
+    let a = new BigNumber(amount);
+    let b = a.div((new BigNumber(10)).pow(decimals));
+    return parseFloat(b.toFixed(decimals, BigNumber.ROUND_DOWN))
 }
 
 export function getAddressByPub(chainId, assetId, pub, prefix) {

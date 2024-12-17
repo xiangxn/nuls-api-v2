@@ -1,7 +1,9 @@
+import { BigNumber } from "bignumber.js";
+
 // const nulsSdkJs = require("nuls-sdk-js");
 
 // const JsonRpcClient = require("./client");
-import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
+import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS,fromNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
@@ -119,7 +121,15 @@ async function main() {
 
     // sign();
 
-    testAddress();
+    // testAddress();
+    testNULS()
+}
+
+function testNULS(){
+    let a = parseNULS("12345678912345678.9123456789");
+    let b = a.div(1);
+    let c = fromNULS(b)
+    console.log(a.toString(10), b, c, parseFloat("123456789123.45678912"), new BigNumber("23456789123.45678912").toNumber());
 }
 
 async function getContract() {
