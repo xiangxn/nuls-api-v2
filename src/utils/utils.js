@@ -422,3 +422,37 @@ export function getStringAddressBase(chainId, type, pri, pub, prefix) {
     var constant = ['a', 'b', 'c', 'd', 'e'];
     return prefix + constant[prefix.length - 1] + bs58.encode(tempBuffer);
 }
+
+export function getStringAddressByBytes(bytes) {
+    let chainId = (bytes[0] & 0xff) |
+        ((bytes[1] & 0xff) << 8);
+    let tempBuffer = Buffer.allocUnsafe(bytes.length + 1);
+    let xor = 0x00;
+    let temp, prefix = "";
+    for (let i = 0; i < bytes.length; i++) {
+        temp = bytes[i];
+        temp = temp > 127 ? temp - 256 : temp;
+        tempBuffer[i] = temp;
+        xor ^= temp
+    }
+    tempBuffer[bytes.length] = xor;
+
+    if (1 === chainId) {
+        prefix = 'NULS';
+    } else if (2 === chainId) {
+        prefix = "tNULS";
+    } else if (prefix) {
+        prefix = prefix.toUpperCase();
+    } else {
+        prefix = bs58.encode(chainIdBuffer).toUpperCase();
+    }
+    let constant = ['a', 'b', 'c', 'd', 'e'];
+    return prefix + constant[prefix.length - 1] + bs58.encode(tempBuffer);
+}
+
+export function getSender(txDataHex) {
+    const buffer = Buffer.from(txDataHex, 'hex');
+    const slice = Buffer.alloc(23);
+    buffer.copy(slice, 0, 0, 23);
+    return getStringAddressByBytes(slice);
+}

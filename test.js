@@ -3,7 +3,8 @@ import { BigNumber } from "bignumber.js";
 // const nulsSdkJs = require("nuls-sdk-js");
 
 // const JsonRpcClient = require("./client");
-import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS,fromNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
+import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, fromNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
+import { getSender } from "./src/api.js";
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
@@ -122,10 +123,18 @@ async function main() {
     // sign();
 
     // testAddress();
-    testNULS()
+    // testNULS()
+
+    testGetSender()
 }
 
-function testNULS(){
+function testGetSender() {
+    let tx = "020001ce590b333c18291a83363475d124ba2f216744290200020ed9ff2a9e61276af2fb635b058d9f0560c29b410000000000000000000000000000000000000000000000000000000000000000bb0c00000000000019000000000000001261646d696e4368616e6765495053686172651e2841646472657373205f69707368617265292072657475726e20766f6964010126744e554c536542614e324d6a695734574d4433644543646e5476783162545932627835635055";
+    let address = getSender(tx)
+    console.log(address, address ==="tNULSeBaMsgbze8jtrnVYw7eRmZF7C8YDeHfAK")
+}
+
+function testNULS() {
     let a = parseNULS("12345678912345678.9123456789");
     let b = a.div(1);
     let c = fromNULS(b)
@@ -139,12 +148,12 @@ async function getContract() {
     console.log("res:", res);
 }
 
-function testAddress(){
+function testAddress() {
     const pub = "026c51ef77f20de89defcb97a125921c637c06cbcfa0bd1d38e3506243333b007b";
     console.log("\n");
-    let addr = getStringAddressBase(2, 1, null,pub);
-    let addr2 = getAddressByPub(2,1,pub);
-    console.log(addr,addr2);
+    let addr = getStringAddressBase(2, 1, null, pub);
+    let addr2 = getAddressByPub(2, 1, pub);
+    console.log(addr, addr2);
 }
 
 function sign() {
