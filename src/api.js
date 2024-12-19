@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { JsonRpcClient } from "./client.js";
 import config from "./config.js";
 import { makeCallData, makeInputsOrOutputs, countFee, deepCloneInstance, getPublic, getAddressByPub } from "./utils/utils.js";
+import { sleep } from "./utils/utils.js";
 import nuls from "nuls-sdk-js/lib/index.js";
 import { Contract } from "./contract.js";
 
@@ -327,6 +328,31 @@ export class NULSAPI {
         const contract = new Contract(address, this);
         await contract.init();
         return contract;
+    }
+
+    /**
+     * 等待执行合约的返回信息
+     * @param {string} txHash 
+     * @param {number} timeout 超时时间 单位：秒
+     */
+    async waitingResult(txHash, timeout = 20) {
+        let result = null;
+        let second = 0;
+        while (true) {
+            result = await this.getContractTxResult(txHash).catch(reason => {
+                console.error("waitingResult error:", reason);
+            });
+            if (!result) {
+                await sleep(1000);
+                second += 1;
+                if (second > timeout) {
+                    throw new Error("waitingResult timeout");
+                };
+            } else {
+                break;
+            }
+        }
+        return result;
     }
 
 }

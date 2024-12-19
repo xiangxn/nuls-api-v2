@@ -456,3 +456,7 @@ export function getSender(txDataHex) {
     buffer.copy(slice, 0, 0, 23);
     return getStringAddressByBytes(slice);
 }
+
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
