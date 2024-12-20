@@ -277,7 +277,7 @@ export class NULSAPI {
         // console.log("txhex:",txhex);
         let result = await this.validateTx(txhex);
         if ("value" in result) {
-            console.debug("validateTx Hash:", result.value);
+            console.debug(`broadcast ${callInfo.methodName} txHash: ${result.value}`);
             result = await this.broadcastTx(txhex);
             if ("value" in result && result.value) {
                 return result.hash;
@@ -315,7 +315,7 @@ export class NULSAPI {
         let txhex = nuls.transactionSerialize(this.accountPri, pub, tAssemble);
         let result = await this.validateTx(txhex);
         if ("value" in result) {
-            console.debug("validateTx Hash:", result.value);
+            console.debug(`broadcast transfer txHash: ${result.value}`);
             result = await this.broadcastTx(txhex);
             if ("value" in result && result.value) {
                 return result.hash;
