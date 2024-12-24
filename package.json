@@ -2,7 +2,6 @@
   "name": "nuls-api-v2",
   "version": "1.0.0",
   "license": "MIT",
-  "type": "module",
   "main": "lib/api.js",
   "module": "src/api.js",
   "types": "src/api.d.ts",
