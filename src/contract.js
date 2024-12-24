@@ -33,7 +33,19 @@ export class Contract {
 
                 if (isView) {   // 只读方法
                     this[functionName] = async (...args) => {
-                        return await this.api.invokeView(this.address, functionName, functionDesc, args);
+                        let blockHeight = null;
+                        let lastArg = args[args.length - 1];
+                        if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber)) {
+                            let opt = args.pop();
+                            if ("blockHeight" in opt) {
+                                blockHeight = opt.blockHeight;
+                            }
+                        }
+                        if (blockHeight) {
+                            return await this.api.invokeView(this.address, functionName, functionDesc, args, blockHeight);
+                        } else {
+                            return await this.api.invokeView(this.address, functionName, functionDesc, args);
+                        }
                     };
                 } else {    // 广播交易方法
                     this[functionName] = async (...args) => {

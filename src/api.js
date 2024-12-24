@@ -9,6 +9,8 @@ import { Contract } from "./contract.js";
 export * from "./utils/utils.js";
 export * from "./utils/storage.js";
 
+const INTEGER_REG = /^-?\d+$/;
+
 export class NULSAPI {
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
         this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });
@@ -51,7 +53,7 @@ export class NULSAPI {
         } else if (checkResult && "result" in res) {
             if (typeof res.result == "string") {
                 try {
-                    if (/^-?\d+$/.test(res.result)) {
+                    if (INTEGER_REG.test(res.result)) {
                         return new BigNumber(res.result);
                     } else {
                         return JSON.parse(res.result);
@@ -168,7 +170,15 @@ export class NULSAPI {
         return this.getResult(await this.client.call("getContract", [this.chainId, contractAddress]));
     }
 
-    async invokeView(contractAddress, methodName, methodDesc = null, args = []) {
+    async invokeView(contractAddress, methodName, methodDesc = null, args = [], blockHeight = null) {
+        if (blockHeight) {
+            if (typeof blockHeight === "string" && INTEGER_REG.test(blockHeight)) {
+                blockHeight = Number(blockHeight);
+                return this.getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args, blockHeight]));
+            } else if (typeof blockHeight === "number") {
+                return this.getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args, blockHeight]));
+            }
+        }
         return this.getResult(await this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]));
     }
 
