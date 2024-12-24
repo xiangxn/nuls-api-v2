@@ -12,6 +12,13 @@ export * from "./utils/storage.js";
 const INTEGER_REG = /^-?\d+$/;
 
 export class NULSAPI {
+    client;
+    chainId;
+    assetId;
+    prefix;
+    sender;
+    accountPri;
+
     constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
         this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });
 
@@ -199,11 +206,11 @@ export class NULSAPI {
         return this.getResult(await this.client.call("imputedContractCallGas", parms));
     }
 
-    async contractCallOffline({ contractAddress, methodName, methodDesc = null, args = [], remark = null, value = 0, multyAssetArray = null }) {
+    async contractCallOffline({ contractAddress, methodName, methodDesc = null, args = [], remark = null, value = "0", multyAssetArray = null }) {
         const [mainBalanceInfo, argsType, gasLimitInfo] = await Promise.all([
             this.getAccountBalance(this.sender, this.chainId),
             this.getContractMethodArgsTypes(contractAddress, methodName, methodDesc),
-            this.imputedContractCallGas({ sender: this.sender, value, contractAddress, methodName, methodDesc, args, multyAssetArray })
+            this.imputedContractCallGas({ value, contractAddress, methodName, methodDesc, args, multyAssetArray })
         ]);
         const senderBalance = mainBalanceInfo.balance;
         const nonce = mainBalanceInfo.nonce;
@@ -251,7 +258,6 @@ export class NULSAPI {
             this.getAccountBalance(this.sender, this.chainId),
             this.getContractMethodArgsTypes(callInfo.contractAddress, callInfo.methodName, callInfo.methodDesc),
             this.imputedContractCallGas({
-                sender: this.sender,
                 value: callInfo.value,
                 contractAddress: callInfo.contractAddress,
                 methodName: callInfo.methodName,
@@ -276,7 +282,7 @@ export class NULSAPI {
             toAddress: callInfo.contractAddress
         };
         if (value.gt(new BigNumber(0))) {
-            transferInfo.value = value;
+            transferInfo['value'] = value;
         }
         let multyAssets = await this.updateMultyAsset(multyAssetArray);
         // console.log("multyAssets:", multyAssets);
