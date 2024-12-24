@@ -22,7 +22,7 @@ export class NULSAPI {
     sender;
     accountPri;
 
-    constructor({ rpcURL, sender, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
+    constructor({ rpcURL, sender = null, accountPri = null, prefix = null, isBeta = false, chainId = undefined, assetId = undefined, proxy = null, httpsAgent = null, httpAgent = null }) {
         this.client = new JsonRpcClient({ url: rpcURL, proxy, httpsAgent, httpAgent });
 
         this.chainId = isBeta ? 2 : 1;

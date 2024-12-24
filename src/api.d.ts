@@ -13,7 +13,7 @@ export declare class NULSAPI {
     accountPri: any;
     constructor({ rpcURL, sender, accountPri, prefix, isBeta, chainId, assetId, proxy, httpsAgent, httpAgent }: {
         rpcURL: any;
-        sender: any;
+        sender?: any;
         accountPri?: any;
         prefix?: any;
         isBeta?: boolean;
