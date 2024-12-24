@@ -2,8 +2,9 @@ import { BigNumber } from "bignumber.js";
 import config from "../config.js";
 import sha3 from "js-sha3";
 import bs58 from "bs58";
-import CryptoJS from "crypto-js";
+import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
+import CryptoJS from "crypto-js";
 import elliptic from "elliptic";
 
 const Elliptic = elliptic.ec;
@@ -459,4 +460,51 @@ export function getSender(txDataHex) {
 
 export function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function verifyAddress(stringAddress) {
+    let result = {};
+    stringAddress = '' + stringAddress;
+    if (stringAddress.startsWith('NULS')) {
+        stringAddress = stringAddress.substring(5);
+    } else if (stringAddress.startsWith('tNULS')) {
+        stringAddress = stringAddress.substring(6);
+    } else {
+        for (let i = 0; i < stringAddress.length; i++) {
+            let val = stringAddress.charAt(i);
+            if (val.charCodeAt(0) >= 97) {
+                stringAddress = stringAddress.substring(i + 1);
+                break;
+            }
+        }
+    }
+    let bytes = Buffer.from(bs58.decode(stringAddress).buffer);
+    result.chainId = bytes.readInt16LE(0);
+    result.type = bytes.readInt8(2);
+    let temp = '';
+    let xor = 0x00;
+    for (let i = 0; i < bytes.length - 1; i++) {
+        temp = bytes[i];
+        temp = temp > 127 ? temp - 256 : temp;
+        bytes[i] = temp;
+        xor ^= temp
+    }
+    if (xor < 0) {
+        xor = 256 + xor;
+    }
+    result.right = xor === bytes[bytes.length - 1];
+    return result;
+}
+
+export function isAddress(stringAddress) {
+    let result = verifyAddress(stringAddress);
+    return result.right;
+}
+
+export function newProgramEncodePacked(args) {
+    return nulsdk.newProgramEncodePacked(args);
+}
+
+export function parseProgramEncodePacked(data) {
+    return nulsdk.parseProgramEncodePacked(data);
 }

@@ -4,7 +4,7 @@ import { BigNumber } from "bignumber.js";
 
 // const JsonRpcClient = require("./client");
 import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, fromNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
-import { getSender } from "./src/api.js";
+import { getSender, isAddress } from "./src/api.js";
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
@@ -125,7 +125,9 @@ async function main() {
     // testAddress();
     // testNULS()
 
-    testGetSender()
+    // testGetSender()
+
+    testAddress();
 }
 
 function testGetSender() {
@@ -153,7 +155,7 @@ function testAddress() {
     console.log("\n");
     let addr = getStringAddressBase(2, 1, null, pub);
     let addr2 = getAddressByPub(2, 1, pub);
-    console.log(addr, addr2);
+    console.log(addr, addr2, isAddress(addr));
 }
 
 function sign() {
