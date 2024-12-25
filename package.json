@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",
-  "main": "dist/api.js",
+  "main": "dist/api.cjs",
   "module": "src/api.js",
   "types": "dist/api.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/api.js",
+      "require": "./dist/api.cjs",
       "import": "./src/api.js"
     }
   },
   "scripts": {
     "test": "node test.js",
-    "build:cjs": "babel src --out-dir dist",
+    "build:cjs": "babel src --out-dir dist --out-file-extension .cjs",
     "build": "yarn build:cjs && cp src/api.js src/api.ts && tsc -d --emitDeclarationOnly --outDir temp --lib es2016,dom src/api.ts && rm src/api.ts && cp temp/api.d.ts dist/api.d.ts && rm -rf temp"
   },
   "dependencies": {
