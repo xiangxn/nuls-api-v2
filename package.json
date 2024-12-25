@@ -2,19 +2,20 @@
   "name": "nuls-api-v2",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "lib/api.js",
+  "type": "module",
+  "main": "dist/api.js",
   "module": "src/api.js",
-  "types": "src/api.d.ts",
+  "types": "dist/api.d.ts",
   "exports": {
     ".": {
-      "import": "./src/api.js",
-      "require": "./lib/api.js"
+      "require": "./dist/api.js",
+      "import": "./src/api.js"
     }
   },
   "scripts": {
     "test": "node test.js",
-    "build:cjs": "babel src --out-dir lib",
-    "build": "cp src/api.js src/api.ts && tsc -d --emitDeclarationOnly --outDir dist --lib es2016,dom src/api.ts && rm src/api.ts && cp dist/api.d.ts src/api.d.ts && rm -rf dist"
+    "build:cjs": "babel src --out-dir dist",
+    "build": "yarn build:cjs && cp src/api.js src/api.ts && tsc -d --emitDeclarationOnly --outDir temp --lib es2016,dom src/api.ts && rm src/api.ts && cp temp/api.d.ts dist/api.d.ts && rm -rf temp"
   },
   "dependencies": {
     "axios": "^1.7.7",
