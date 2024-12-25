@@ -40,6 +40,12 @@ Object.defineProperty(exports, "getBytesAddress", {
     return _utils.getBytesAddress;
   }
 });
+Object.defineProperty(exports, "getEvent", {
+  enumerable: true,
+  get: function get() {
+    return _utils.getEvent;
+  }
+});
 Object.defineProperty(exports, "getPublic", {
   enumerable: true,
   get: function get() {

@@ -10,7 +10,7 @@ const INTEGER_REG = /^-?\d+$/;
 
 export { stringToByte, twoDimensionalArray, makeInputsOrOutputs, makeCallData, countFee, deepCloneInstance } from "./utils/utils.js";
 export { hashMessage, signMessage, verifySign, getPublic, parseNULS, fromNULS, getAddressByPub, getBytesAddress } from "./utils/utils.js";
-export { getStringAddressBase, getStringAddressByBytes, getSender, sleep, verifyAddress, isAddress } from "./utils/utils.js";
+export { getStringAddressBase, getStringAddressByBytes, getSender, sleep, verifyAddress, isAddress, getEvent } from "./utils/utils.js";
 export { newProgramEncodePacked, parseProgramEncodePacked } from "./utils/utils.js";
 export { Storage } from "./utils/storage.js";
 

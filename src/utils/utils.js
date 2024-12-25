@@ -508,3 +508,21 @@ export function newProgramEncodePacked(args) {
 export function parseProgramEncodePacked(data) {
     return nulsdk.parseProgramEncodePacked(data);
 }
+
+export function getEvent(txResult, eventName = null, contractAddress = null) {
+    if (eventName == null || eventName == "") return null;
+    if ("events" in txResult) {
+        if (contractAddress == null) {
+            contractAddress = txResult.contractAddress;
+        }
+        for (let event of txResult.events) {
+            let str = `"event":"${eventName}"`;
+            if (event.includes(str)) {
+                const obj = JSON.parse(event);
+                if (obj.contractAddress === contractAddress)
+                    return obj
+            }
+        }
+    }
+    return null;
+}
