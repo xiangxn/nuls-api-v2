@@ -31,6 +31,7 @@
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-modules-commonjs": "^7.26.3",
     "@babel/preset-env": "^7.26.0",
+    "babel-plugin-replace-import-extension": "^1.1.4",
     "typescript": "^5.7.2"
   }
 }

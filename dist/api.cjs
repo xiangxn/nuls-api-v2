@@ -143,12 +143,12 @@ Object.defineProperty(exports, "verifySign", {
   }
 });
 var _bignumber = _interopRequireDefault(require("bignumber.js"));
-var _client = require("./client.js");
-var _config = _interopRequireDefault(require("./config.js"));
-var _utils = require("./utils/utils.js");
+var _client = require("./client.cjs");
+var _config = _interopRequireDefault(require("./config.cjs"));
+var _utils = require("./utils/utils.cjs");
 var _index = _interopRequireDefault(require("nuls-sdk-js/lib/index.js"));
-var _contract2 = require("./contract.js");
-var _storage = require("./utils/storage.js");
+var _contract2 = require("./contract.cjs");
+var _storage = require("./utils/storage.cjs");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }

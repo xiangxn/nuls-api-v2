@@ -1220,6 +1220,11 @@ babel-plugin-polyfill-regenerator@^0.6.1:
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.6.3"
 
+babel-plugin-replace-import-extension@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.npmjs.org/babel-plugin-replace-import-extension/-/babel-plugin-replace-import-extension-1.1.4.tgz#bfe96afd8363e47b9512086bfc0953e0493f4427"
+  integrity sha512-UJi5YV31JxoaHHxhytRhQqOQN3+ZsaoXVia7e58yc35pe4tNjNr7BdznnDvIPbEG/4u5kf+lLDk9peaxsOPxGw==
+
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "https://registry.npmjs.org/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
