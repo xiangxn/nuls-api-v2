@@ -1221,7 +1221,7 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               }
               _context29.next = 6;
               return this.getContractTxResult(txHash)["catch"](function (reason) {
-                console.error("waitingResult error:", reason);
+                // console.error("waitingResult error:", reason);
               });
             case 6:
               result = _context29.sent;

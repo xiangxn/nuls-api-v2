@@ -359,7 +359,7 @@ export class NULSAPI {
         let second = 0;
         while (true) {
             result = await this.getContractTxResult(txHash).catch(reason => {
-                console.error("waitingResult error:", reason);
+                // console.error("waitingResult error:", reason);
             });
             if (!result) {
                 await sleep(1000);
