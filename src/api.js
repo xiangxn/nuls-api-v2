@@ -275,6 +275,7 @@ export class NULSAPI {
         if (gasMax > 0) {
             limit = Math.max(gasLimitInfo.gasLimit, gasMax);
         }
+        limit = Math.min(limit, config.CONTRACT_MAX_GASLIMIT);
         const callData = makeCallData(this.chainId, this.sender, callInfo.value, callInfo.contractAddress, callInfo.methodName,
             callInfo.methodDesc, callInfo.args, argsType, limit);
         let gasLimit = new BigNumber(callData.gasLimit);

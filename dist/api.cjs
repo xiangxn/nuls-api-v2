@@ -1070,6 +1070,7 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               if (gasMax > 0) {
                 limit = Math.max(gasLimitInfo.gasLimit, gasMax);
               }
+              limit = Math.min(limit, _config["default"].CONTRACT_MAX_GASLIMIT);
               callData = (0, _utils.makeCallData)(this.chainId, this.sender, callInfo.value, callInfo.contractAddress, callInfo.methodName, callInfo.methodDesc, callInfo.args, argsType, limit);
               gasLimit = new _bignumber["default"](callData.gasLimit);
               gasFee = gasLimit.times(callData.price);
@@ -1085,35 +1086,35 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               if (value.gt(new _bignumber["default"](0))) {
                 transferInfo['value'] = value;
               }
-              _context26.next = 21;
+              _context26.next = 22;
               return this.updateMultyAsset(multyAssetArray);
-            case 21:
+            case 22:
               multyAssets = _context26.sent;
               // console.log("multyAssets:", multyAssets);
               inOrOutputs = (0, _utils.makeInputsOrOutputs)(transferInfo, mainBalanceInfo, multyAssets, nulsValueToOthers); // console.log("inOrOutputs:", inOrOutputs);
               tAssemble = _index["default"].transactionAssemble(inOrOutputs.inputs, inOrOutputs.outputs, remark, 16, callData);
               txhex = _index["default"].transactionSerialize(this.accountPri, pub, tAssemble); // console.log("txhex:",txhex);
-              _context26.next = 27;
+              _context26.next = 28;
               return this.validateTx(txhex);
-            case 27:
+            case 28:
               result = _context26.sent;
               if (!("value" in result)) {
-                _context26.next = 35;
+                _context26.next = 36;
                 break;
               }
               console.debug("broadcast ".concat(callInfo.methodName, " txHash: ").concat(result.value));
-              _context26.next = 32;
+              _context26.next = 33;
               return this.broadcastTx(txhex);
-            case 32:
+            case 33:
               result = _context26.sent;
               if (!("value" in result && result.value)) {
-                _context26.next = 35;
+                _context26.next = 36;
                 break;
               }
               return _context26.abrupt("return", result.hash);
-            case 35:
-              return _context26.abrupt("return", null);
             case 36:
+              return _context26.abrupt("return", null);
+            case 37:
             case "end":
               return _context26.stop();
           }
