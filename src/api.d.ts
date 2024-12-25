@@ -90,7 +90,7 @@ export declare class NULSAPI {
         price: any;
     }): Promise<any>;
     updateMultyAsset(multyAssetArray: any): Promise<any>;
-    callContract(callInfo: any, remark: any, multyAssetArray: any, nulsValueToOthers: any): Promise<any>;
+    callContract(callInfo: any, remark: any, multyAssetArray: any, nulsValueToOthers: any, gasLimitTimes?: number, gasMax?: number): Promise<any>;
     transfer(toAddress: any, value: any, remark: any, multyAssets: any): Promise<any>;
     contract(address: any): Promise<any>;
     /**

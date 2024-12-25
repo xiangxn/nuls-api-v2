@@ -1022,12 +1022,34 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
     key: "callContract",
     value: function () {
       var _callContract = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee26(callInfo, remark, multyAssetArray, nulsValueToOthers) {
-        var pub, _yield$Promise$all3, _yield$Promise$all4, mainBalanceInfo, argsType, gasLimitInfo, value, callData, gasLimit, gasFee, amount, transferInfo, multyAssets, inOrOutputs, tAssemble, txhex, result;
+        var gasLimitTimes,
+          gasMax,
+          pub,
+          _yield$Promise$all3,
+          _yield$Promise$all4,
+          mainBalanceInfo,
+          argsType,
+          gasLimitInfo,
+          value,
+          limit,
+          callData,
+          gasLimit,
+          gasFee,
+          amount,
+          transferInfo,
+          multyAssets,
+          inOrOutputs,
+          tAssemble,
+          txhex,
+          result,
+          _args26 = arguments;
         return _regeneratorRuntime().wrap(function _callee26$(_context26) {
           while (1) switch (_context26.prev = _context26.next) {
             case 0:
+              gasLimitTimes = _args26.length > 4 && _args26[4] !== undefined ? _args26[4] : 1;
+              gasMax = _args26.length > 5 && _args26[5] !== undefined ? _args26[5] : 0;
               pub = (0, _utils.getPublic)(this.accountPri); // console.log("callContract......", pub)
-              _context26.next = 3;
+              _context26.next = 5;
               return Promise.all([this.getAccountBalance(this.sender, this.chainId), this.getContractMethodArgsTypes(callInfo.contractAddress, callInfo.methodName, callInfo.methodDesc), this.imputedContractCallGas({
                 value: callInfo.value,
                 contractAddress: callInfo.contractAddress,
@@ -1036,7 +1058,7 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
                 args: callInfo.args,
                 multyAssetArray: multyAssetArray
               })]);
-            case 3:
+            case 5:
               _yield$Promise$all3 = _context26.sent;
               _yield$Promise$all4 = _slicedToArray(_yield$Promise$all3, 3);
               mainBalanceInfo = _yield$Promise$all4[0];
@@ -1044,7 +1066,11 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               gasLimitInfo = _yield$Promise$all4[2];
               // console.log(mainBalanceInfo, argsType, gasLimitInfo)
               value = new _bignumber["default"](callInfo.value);
-              callData = (0, _utils.makeCallData)(this.chainId, this.sender, callInfo.value, callInfo.contractAddress, callInfo.methodName, callInfo.methodDesc, callInfo.args, argsType, gasLimitInfo.gasLimit);
+              limit = Math.round(gasLimitInfo.gasLimit * gasLimitTimes);
+              if (gasMax > 0) {
+                limit = Math.max(gasLimitInfo.gasLimit, gasMax);
+              }
+              callData = (0, _utils.makeCallData)(this.chainId, this.sender, callInfo.value, callInfo.contractAddress, callInfo.methodName, callInfo.methodDesc, callInfo.args, argsType, limit);
               gasLimit = new _bignumber["default"](callData.gasLimit);
               gasFee = gasLimit.times(callData.price);
               amount = value.plus(gasFee);
@@ -1059,35 +1085,35 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               if (value.gt(new _bignumber["default"](0))) {
                 transferInfo['value'] = value;
               }
-              _context26.next = 17;
+              _context26.next = 21;
               return this.updateMultyAsset(multyAssetArray);
-            case 17:
+            case 21:
               multyAssets = _context26.sent;
               // console.log("multyAssets:", multyAssets);
               inOrOutputs = (0, _utils.makeInputsOrOutputs)(transferInfo, mainBalanceInfo, multyAssets, nulsValueToOthers); // console.log("inOrOutputs:", inOrOutputs);
               tAssemble = _index["default"].transactionAssemble(inOrOutputs.inputs, inOrOutputs.outputs, remark, 16, callData);
               txhex = _index["default"].transactionSerialize(this.accountPri, pub, tAssemble); // console.log("txhex:",txhex);
-              _context26.next = 23;
+              _context26.next = 27;
               return this.validateTx(txhex);
-            case 23:
+            case 27:
               result = _context26.sent;
               if (!("value" in result)) {
-                _context26.next = 31;
+                _context26.next = 35;
                 break;
               }
               console.debug("broadcast ".concat(callInfo.methodName, " txHash: ").concat(result.value));
-              _context26.next = 28;
+              _context26.next = 32;
               return this.broadcastTx(txhex);
-            case 28:
+            case 32:
               result = _context26.sent;
               if (!("value" in result && result.value)) {
-                _context26.next = 31;
+                _context26.next = 35;
                 break;
               }
               return _context26.abrupt("return", result.hash);
-            case 31:
+            case 35:
               return _context26.abrupt("return", null);
-            case 32:
+            case 36:
             case "end":
               return _context26.stop();
           }

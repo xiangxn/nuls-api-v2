@@ -254,7 +254,7 @@ export class NULSAPI {
         return multyAssetArray;
     }
 
-    async callContract(callInfo, remark, multyAssetArray, nulsValueToOthers) {
+    async callContract(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes = 1, gasMax = 0) {
         const pub = getPublic(this.accountPri);
         // console.log("callContract......", pub)
         const [mainBalanceInfo, argsType, gasLimitInfo] = await Promise.all([
@@ -271,8 +271,12 @@ export class NULSAPI {
         ]);
         // console.log(mainBalanceInfo, argsType, gasLimitInfo)
         let value = new BigNumber(callInfo.value);
+        let limit = Math.round(gasLimitInfo.gasLimit * gasLimitTimes);
+        if (gasMax > 0) {
+            limit = Math.max(gasLimitInfo.gasLimit, gasMax);
+        }
         const callData = makeCallData(this.chainId, this.sender, callInfo.value, callInfo.contractAddress, callInfo.methodName,
-            callInfo.methodDesc, callInfo.args, argsType, gasLimitInfo.gasLimit);
+            callInfo.methodDesc, callInfo.args, argsType, limit);
         let gasLimit = new BigNumber(callData.gasLimit);
         let gasFee = gasLimit.times(callData.price);
         let amount = value.plus(gasFee);

@@ -60,10 +60,22 @@ export class Contract {
                         let multyAssetArray;
                         let nulsValueToOthers;
                         let lastArg = args[args.length - 1];
+                        let gasLimitTimes = 1;
+                        let gasLimit = 0;
                         if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber)) {
                             let opt = callInfo.args.pop();
                             if (method.payable && "value" in opt) {
                                 callInfo.value = opt.value;
+                            }
+                            if ("gasLimitTimes" in opt) {
+                                try {
+                                    gasLimitTimes = parseFloat(opt.gasLimitTimes);
+                                } catch { }
+                            }
+                            if ("gasLimit" in opt) {
+                                try {
+                                    gasLimit = parseInt(opt.gasLimit);
+                                } catch { }
                             }
                             if ("remark" in opt) {
                                 remark = opt.remark;
@@ -75,7 +87,7 @@ export class Contract {
                                 nulsValueToOthers = opt.nulsValueToOthers;
                             }
                         }
-                        return await this.api.callContract(callInfo, remark, multyAssetArray, nulsValueToOthers);
+                        return await this.api.callContract(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasLimit);
                     };
                 }
             }

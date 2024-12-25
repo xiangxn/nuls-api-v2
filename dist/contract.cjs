@@ -117,6 +117,8 @@ var Contract = exports.Contract = /*#__PURE__*/function () {
                         multyAssetArray,
                         nulsValueToOthers,
                         lastArg,
+                        gasLimitTimes,
+                        gasLimit,
                         opt,
                         _args2 = arguments;
                       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
@@ -133,10 +135,22 @@ var Contract = exports.Contract = /*#__PURE__*/function () {
                               value: 0
                             };
                             lastArg = args[args.length - 1];
+                            gasLimitTimes = 1;
+                            gasLimit = 0;
                             if (lastArg && _typeof(lastArg) === "object" && !(lastArg instanceof _bignumber["default"])) {
                               opt = callInfo.args.pop();
                               if (method.payable && "value" in opt) {
                                 callInfo.value = opt.value;
+                              }
+                              if ("gasLimitTimes" in opt) {
+                                try {
+                                  gasLimitTimes = parseFloat(opt.gasLimitTimes);
+                                } catch (_unused) {}
+                              }
+                              if ("gasLimit" in opt) {
+                                try {
+                                  gasLimit = parseInt(opt.gasLimit);
+                                } catch (_unused2) {}
                               }
                               if ("remark" in opt) {
                                 remark = opt.remark;
@@ -148,11 +162,11 @@ var Contract = exports.Contract = /*#__PURE__*/function () {
                                 nulsValueToOthers = opt.nulsValueToOthers;
                               }
                             }
-                            _context2.next = 6;
-                            return _this.api.callContract(callInfo, remark, multyAssetArray, nulsValueToOthers);
-                          case 6:
+                            _context2.next = 8;
+                            return _this.api.callContract(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasLimit);
+                          case 8:
                             return _context2.abrupt("return", _context2.sent);
-                          case 7:
+                          case 9:
                           case "end":
                             return _context2.stop();
                         }
