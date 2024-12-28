@@ -1286,6 +1286,73 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
         return _waitingResult.apply(this, arguments);
       }
       return waitingResult;
+    }()
+    /**
+     * 等待执行交易确认
+     * @param {string} txHash 
+     * @param {number} timeout 
+     */
+    )
+  }, {
+    key: "waitingTx",
+    value: (function () {
+      var _waitingTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee30(txHash) {
+        var timeout,
+          result,
+          second,
+          _args30 = arguments;
+        return _regeneratorRuntime().wrap(function _callee30$(_context30) {
+          while (1) switch (_context30.prev = _context30.next) {
+            case 0:
+              timeout = _args30.length > 1 && _args30[1] !== undefined ? _args30[1] : 20;
+              result = null;
+              second = 0;
+            case 3:
+              if (!true) {
+                _context30.next = 20;
+                break;
+              }
+              _context30.next = 6;
+              return this.getTx(txHash)["catch"](function (reason) {
+                // console.error("waitingTx error:", reason);
+              });
+            case 6:
+              result = _context30.sent;
+              if (!(!result || result.status == 0)) {
+                _context30.next = 17;
+                break;
+              }
+              _context30.next = 10;
+              return (0, _utils.sleep)(1000);
+            case 10:
+              second += 1;
+              if (!(second > timeout)) {
+                _context30.next = 14;
+                break;
+              }
+              console.debug("result:", result);
+              throw new Error("waitingTx timeout");
+            case 14:
+              ;
+              _context30.next = 18;
+              break;
+            case 17:
+              return _context30.abrupt("break", 20);
+            case 18:
+              _context30.next = 3;
+              break;
+            case 20:
+              return _context30.abrupt("return", result);
+            case 21:
+            case "end":
+              return _context30.stop();
+          }
+        }, _callee30, this);
+      }));
+      function waitingTx(_x33) {
+        return _waitingTx.apply(this, arguments);
+      }
+      return waitingTx;
     }())
   }]);
 }();

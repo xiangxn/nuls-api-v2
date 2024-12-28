@@ -379,4 +379,30 @@ export class NULSAPI {
         return result;
     }
 
+    /**
+     * 等待执行交易确认
+     * @param {string} txHash 
+     * @param {number} timeout 
+     */
+    async waitingTx(txHash, timeout = 20) {
+        let result = null;
+        let second = 0;
+        while (true) {
+            result = await this.getTx(txHash).catch(reason => {
+                // console.error("waitingTx error:", reason);
+            });
+            if (!result || result.status == 0) {
+                await sleep(1000);
+                second += 1;
+                if (second > timeout) {
+                    console.debug("result:", result);
+                    throw new Error("waitingTx timeout");
+                };
+            } else {
+                break;
+            }
+        }
+        return result;
+    }
+
 }

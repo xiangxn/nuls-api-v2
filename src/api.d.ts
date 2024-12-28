@@ -99,4 +99,10 @@ export declare class NULSAPI {
      * @param {number} timeout 超时时间 单位：秒
      */
     waitingResult(txHash: any, timeout?: number): Promise<any>;
+    /**
+     * 等待执行交易确认
+     * @param {string} txHash
+     * @param {number} timeout
+     */
+    waitingTx(txHash: any, timeout?: number): Promise<any>;
 }
