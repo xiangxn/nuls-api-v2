@@ -3,6 +3,8 @@ import config from "../config.js";
 import sha3 from "js-sha3";
 import bs58 from "bs58";
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
+import BufferReader from "nuls-sdk-js/lib/utils/bufferreader.js";
+import txs from "nuls-sdk-js/lib/model/txs.js";
 
 import CryptoJS from "crypto-js";
 import elliptic from "elliptic";
@@ -525,4 +527,11 @@ export function getEvent(txResult, eventName = null, contractAddress = null) {
         }
     }
     return null;
+}
+
+export function parseTransaction(bufferData) {
+    const reader = new BufferReader(bufferData, 0);
+    const tt = new txs.Transaction();
+    tt.parse(reader);
+    return tt;
 }

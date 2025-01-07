@@ -1,6 +1,48 @@
 import BigNumber from "bignumber.js";
 import { Storage } from "./utils/storage.js";
 
+function createParams(address, method, ...args) {
+    let callInfo = {
+        contractAddress: address,
+        methodName: method.name,
+        methodDesc: method.desc,
+        args: [...args],
+        value: 0
+    };
+    let remark;
+    let multyAssetArray;
+    let nulsValueToOthers;
+    let lastArg = args[args.length - 1];
+    let gasLimitTimes = 1;
+    let gasLimit = 0;
+    if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber)) {
+        let opt = callInfo.args.pop();
+        if (method.payable && "value" in opt) {
+            callInfo.value = opt.value;
+        }
+        if ("gasLimitTimes" in opt) {
+            try {
+                gasLimitTimes = parseFloat(opt.gasLimitTimes);
+            } catch { }
+        }
+        if ("gasLimit" in opt) {
+            try {
+                gasLimit = parseInt(opt.gasLimit);
+            } catch { }
+        }
+        if ("remark" in opt) {
+            remark = opt.remark;
+        }
+        if (method.payableMultyAsset && "multyAssetArray" in opt) {
+            multyAssetArray = opt.multyAssetArray;
+        }
+        if ("nulsValueToOthers" in opt) {
+            nulsValueToOthers = opt.nulsValueToOthers;
+        }
+    }
+    return { callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasLimit }
+}
+
 export class Contract {
 
     constructor(address, api) {
@@ -49,45 +91,13 @@ export class Contract {
                     };
                 } else {    // 广播交易方法
                     this[functionName] = async (...args) => {
-                        let callInfo = {
-                            contractAddress: this.address,
-                            methodName: functionName,
-                            methodDesc: functionDesc,
-                            args: [...args],
-                            value: 0
-                        };
-                        let remark;
-                        let multyAssetArray;
-                        let nulsValueToOthers;
-                        let lastArg = args[args.length - 1];
-                        let gasLimitTimes = 1;
-                        let gasLimit = 0;
-                        if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber)) {
-                            let opt = callInfo.args.pop();
-                            if (method.payable && "value" in opt) {
-                                callInfo.value = opt.value;
-                            }
-                            if ("gasLimitTimes" in opt) {
-                                try {
-                                    gasLimitTimes = parseFloat(opt.gasLimitTimes);
-                                } catch { }
-                            }
-                            if ("gasLimit" in opt) {
-                                try {
-                                    gasLimit = parseInt(opt.gasLimit);
-                                } catch { }
-                            }
-                            if ("remark" in opt) {
-                                remark = opt.remark;
-                            }
-                            if (method.payableMultyAsset && "multyAssetArray" in opt) {
-                                multyAssetArray = opt.multyAssetArray;
-                            }
-                            if ("nulsValueToOthers" in opt) {
-                                nulsValueToOthers = opt.nulsValueToOthers;
-                            }
-                        }
+                        let { callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasLimit } = createParams(this.address, method, ...args);
                         return await this.api.callContract(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasLimit);
+                    };
+                    // 构建交易对象
+                    this[`build_${functionName}`] = async (...args) => {
+                        let { callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasLimit } = createParams(this.address, method, ...args);
+                        return await this.api.createContractTx(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasLimit);
                     };
                 }
             }

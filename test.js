@@ -4,7 +4,7 @@ import { BigNumber } from "bignumber.js";
 
 // const JsonRpcClient = require("./client");
 import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, fromNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
-import { getSender, isAddress } from "./src/api.js";
+import { getSender, isAddress, parseTransaction } from "./src/api.js";
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
@@ -127,13 +127,30 @@ async function main() {
 
     // testGetSender()
 
-    testAddress();
+    // testAddress();
+
+    await testNewContract();
+}
+
+async function testNewContract() {
+    let contract = await sdk.contract(testContract);
+    // let hash = await contract.testDo(1, { value: "100000000" })
+    // console.log("hash:", hash);
+
+    let tx = await contract.build_testDo(1, { value: "100000000" })
+    console.log("tx:", tx);
+
+    let ser = tx.txSerialize().toString('hex');
+    console.log("ser:", ser);
+
+    let ntx = parseTransaction(Buffer.from(ser,'hex'));
+    console.log("ntx:", ntx);
 }
 
 function testGetSender() {
     let tx = "020001ce590b333c18291a83363475d124ba2f216744290200020ed9ff2a9e61276af2fb635b058d9f0560c29b410000000000000000000000000000000000000000000000000000000000000000bb0c00000000000019000000000000001261646d696e4368616e6765495053686172651e2841646472657373205f69707368617265292072657475726e20766f6964010126744e554c536542614e324d6a695734574d4433644543646e5476783162545932627835635055";
     let address = getSender(tx)
-    console.log(address, address ==="tNULSeBaMsgbze8jtrnVYw7eRmZF7C8YDeHfAK")
+    console.log(address, address === "tNULSeBaMsgbze8jtrnVYw7eRmZF7C8YDeHfAK")
 }
 
 function testNULS() {

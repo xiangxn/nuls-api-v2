@@ -20,6 +20,7 @@ exports.makeInputsOrOutputs = makeInputsOrOutputs;
 exports.newProgramEncodePacked = newProgramEncodePacked;
 exports.parseNULS = parseNULS;
 exports.parseProgramEncodePacked = parseProgramEncodePacked;
+exports.parseTransaction = parseTransaction;
 exports.signMessage = signMessage;
 exports.sleep = sleep;
 exports.stringToByte = stringToByte;
@@ -31,6 +32,8 @@ var _config = _interopRequireDefault(require("../config.cjs"));
 var _jsSha = _interopRequireDefault(require("js-sha3"));
 var _bs = _interopRequireDefault(require("bs58"));
 var _sdk = _interopRequireDefault(require("nuls-sdk-js/lib/api/sdk.js"));
+var _bufferreader = _interopRequireDefault(require("nuls-sdk-js/lib/utils/bufferreader.js"));
+var _txs = _interopRequireDefault(require("nuls-sdk-js/lib/model/txs.js"));
 var _cryptoJs = _interopRequireDefault(require("crypto-js"));
 var _elliptic = _interopRequireDefault(require("elliptic"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
@@ -534,4 +537,10 @@ function getEvent(txResult) {
     }
   }
   return null;
+}
+function parseTransaction(bufferData) {
+  var reader = new _bufferreader["default"](bufferData, 0);
+  var tt = new _txs["default"].Transaction();
+  tt.parse(reader);
+  return tt;
 }

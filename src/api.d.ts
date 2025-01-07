@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 export { stringToByte, twoDimensionalArray, makeInputsOrOutputs, makeCallData, countFee, deepCloneInstance } from "./utils/utils.js";
 export { hashMessage, signMessage, verifySign, getPublic, parseNULS, fromNULS, getAddressByPub, getBytesAddress } from "./utils/utils.js";
 export { getStringAddressBase, getStringAddressByBytes, getSender, sleep, verifyAddress, isAddress, getEvent } from "./utils/utils.js";
-export { newProgramEncodePacked, parseProgramEncodePacked } from "./utils/utils.js";
+export { newProgramEncodePacked, parseProgramEncodePacked, parseTransaction } from "./utils/utils.js";
 export { Storage } from "./utils/storage.js";
 export declare class NULSAPI {
     client: any;
@@ -90,6 +90,7 @@ export declare class NULSAPI {
         price: any;
     }): Promise<any>;
     updateMultyAsset(multyAssetArray: any): Promise<any>;
+    createContractTx(callInfo: any, remark: any, multyAssetArray: any, nulsValueToOthers: any, gasLimitTimes?: number, gasMax?: number): Promise<any>;
     callContract(callInfo: any, remark: any, multyAssetArray: any, nulsValueToOthers: any, gasLimitTimes?: number, gasMax?: number): Promise<any>;
     transfer(toAddress: any, value: any, remark: any, multyAssets: any): Promise<any>;
     contract(address: any): Promise<any>;

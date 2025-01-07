@@ -11,7 +11,7 @@ const INTEGER_REG = /^-?\d+$/;
 export { stringToByte, twoDimensionalArray, makeInputsOrOutputs, makeCallData, countFee, deepCloneInstance } from "./utils/utils.js";
 export { hashMessage, signMessage, verifySign, getPublic, parseNULS, fromNULS, getAddressByPub, getBytesAddress } from "./utils/utils.js";
 export { getStringAddressBase, getStringAddressByBytes, getSender, sleep, verifyAddress, isAddress, getEvent } from "./utils/utils.js";
-export { newProgramEncodePacked, parseProgramEncodePacked } from "./utils/utils.js";
+export { newProgramEncodePacked, parseProgramEncodePacked, parseTransaction } from "./utils/utils.js";
 export { Storage } from "./utils/storage.js";
 
 export class NULSAPI {
@@ -254,9 +254,7 @@ export class NULSAPI {
         return multyAssetArray;
     }
 
-    async callContract(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes = 1, gasMax = 0) {
-        const pub = getPublic(this.accountPri);
-        // console.log("callContract......", pub)
+    async createContractTx(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes = 1, gasMax = 0) {
         const [mainBalanceInfo, argsType, gasLimitInfo] = await Promise.all([
             this.getAccountBalance(this.sender, this.chainId),
             this.getContractMethodArgsTypes(callInfo.contractAddress, callInfo.methodName, callInfo.methodDesc),
@@ -297,6 +295,13 @@ export class NULSAPI {
         let inOrOutputs = makeInputsOrOutputs(transferInfo, mainBalanceInfo, multyAssets, nulsValueToOthers);
         // console.log("inOrOutputs:", inOrOutputs);
         let tAssemble = nuls.transactionAssemble(inOrOutputs.inputs, inOrOutputs.outputs, remark, 16, callData);
+
+        return tAssemble;
+    }
+
+    async callContract(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes = 1, gasMax = 0) {
+        const pub = getPublic(this.accountPri);
+        let tAssemble = await this.createContractTx(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasMax);
         let txhex = nuls.transactionSerialize(this.accountPri, pub, tAssemble);
         // console.log("txhex:",txhex);
         let result = await this.validateTx(txhex);
