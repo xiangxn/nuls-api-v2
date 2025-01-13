@@ -140,6 +140,10 @@ export class NULSAPI {
         return this.getResult(await this.client.call("getLatestHeight", [this.chainId]));
     }
 
+    async getCrossAssetInfo(assetChainId, assetId) {
+        return this.getResult(await this.client.call("getCrossAssetInfo", [assetChainId, assetId]));
+    }
+
     async getTx(txHash) {
         return this.getResult(await this.client.call("getTx", [this.chainId, txHash]));
     }

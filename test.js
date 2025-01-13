@@ -129,7 +129,14 @@ async function main() {
 
     // testAddress();
 
-    await testNewContract();
+    // await testNewContract();
+
+    await testAsset();
+}
+
+async function testAsset() {
+    let result = await sdk.getCrossAssetInfo(2, 1);
+    console.log("result:", result);
 }
 
 async function testNewContract() {
