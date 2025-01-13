@@ -584,15 +584,15 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
       return getLatestHeight;
     }()
   }, {
-    key: "getTx",
+    key: "getCrossAssetInfo",
     value: function () {
-      var _getTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee13(txHash) {
+      var _getCrossAssetInfo = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee13(assetChainId, assetId) {
         return _regeneratorRuntime().wrap(function _callee13$(_context13) {
           while (1) switch (_context13.prev = _context13.next) {
             case 0:
               _context13.t0 = this;
               _context13.next = 3;
-              return this.client.call("getTx", [this.chainId, txHash]);
+              return this.client.call("getCrossAssetInfo", [assetChainId, assetId]);
             case 3:
               _context13.t1 = _context13.sent;
               return _context13.abrupt("return", _context13.t0.getResult.call(_context13.t0, _context13.t1));
@@ -602,7 +602,31 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
           }
         }, _callee13, this);
       }));
-      function getTx(_x8) {
+      function getCrossAssetInfo(_x8, _x9) {
+        return _getCrossAssetInfo.apply(this, arguments);
+      }
+      return getCrossAssetInfo;
+    }()
+  }, {
+    key: "getTx",
+    value: function () {
+      var _getTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee14(txHash) {
+        return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+          while (1) switch (_context14.prev = _context14.next) {
+            case 0:
+              _context14.t0 = this;
+              _context14.next = 3;
+              return this.client.call("getTx", [this.chainId, txHash]);
+            case 3:
+              _context14.t1 = _context14.sent;
+              return _context14.abrupt("return", _context14.t0.getResult.call(_context14.t0, _context14.t1));
+            case 5:
+            case "end":
+              return _context14.stop();
+          }
+        }, _callee14, this);
+      }));
+      function getTx(_x10) {
         return _getTx.apply(this, arguments);
       }
       return getTx;
@@ -610,23 +634,23 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "getContractTxResult",
     value: function () {
-      var _getContractTxResult = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee14(txHash) {
-        return _regeneratorRuntime().wrap(function _callee14$(_context14) {
-          while (1) switch (_context14.prev = _context14.next) {
+      var _getContractTxResult = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee15(txHash) {
+        return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+          while (1) switch (_context15.prev = _context15.next) {
             case 0:
-              _context14.t0 = this;
-              _context14.next = 3;
+              _context15.t0 = this;
+              _context15.next = 3;
               return this.client.call("getContractTxResult", [this.chainId, txHash]);
             case 3:
-              _context14.t1 = _context14.sent;
-              return _context14.abrupt("return", _context14.t0.getResult.call(_context14.t0, _context14.t1, false));
+              _context15.t1 = _context15.sent;
+              return _context15.abrupt("return", _context15.t0.getResult.call(_context15.t0, _context15.t1, false));
             case 5:
             case "end":
-              return _context14.stop();
+              return _context15.stop();
           }
-        }, _callee14, this);
+        }, _callee15, this);
       }));
-      function getContractTxResult(_x9) {
+      function getContractTxResult(_x11) {
         return _getContractTxResult.apply(this, arguments);
       }
       return getContractTxResult;
@@ -634,10 +658,10 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "getContractTxResultList",
     value: function () {
-      var _getContractTxResultList = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee15(txHashs) {
+      var _getContractTxResultList = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee16(txHashs) {
         var hs;
-        return _regeneratorRuntime().wrap(function _callee15$(_context15) {
-          while (1) switch (_context15.prev = _context15.next) {
+        return _regeneratorRuntime().wrap(function _callee16$(_context16) {
+          while (1) switch (_context16.prev = _context16.next) {
             case 0:
               hs = [];
               if (Array.isArray(txHashs)) {
@@ -645,19 +669,19 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               } else {
                 hs = [txHashs];
               }
-              _context15.t0 = this;
-              _context15.next = 5;
+              _context16.t0 = this;
+              _context16.next = 5;
               return this.client.call("getContractTxResultList", [this.chainId, hs]);
             case 5:
-              _context15.t1 = _context15.sent;
-              return _context15.abrupt("return", _context15.t0.getResult.call(_context15.t0, _context15.t1));
+              _context16.t1 = _context16.sent;
+              return _context16.abrupt("return", _context16.t0.getResult.call(_context16.t0, _context16.t1));
             case 7:
             case "end":
-              return _context15.stop();
+              return _context16.stop();
           }
-        }, _callee15, this);
+        }, _callee16, this);
       }));
-      function getContractTxResultList(_x10) {
+      function getContractTxResultList(_x12) {
         return _getContractTxResultList.apply(this, arguments);
       }
       return getContractTxResultList;
@@ -671,37 +695,13 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "validateTx",
     value: (function () {
-      var _validateTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee16(txHex) {
-        return _regeneratorRuntime().wrap(function _callee16$(_context16) {
-          while (1) switch (_context16.prev = _context16.next) {
-            case 0:
-              _context16.t0 = this;
-              _context16.next = 3;
-              return this.client.call("validateTx", [this.chainId, txHex]);
-            case 3:
-              _context16.t1 = _context16.sent;
-              return _context16.abrupt("return", _context16.t0.getResult.call(_context16.t0, _context16.t1));
-            case 5:
-            case "end":
-              return _context16.stop();
-          }
-        }, _callee16, this);
-      }));
-      function validateTx(_x11) {
-        return _validateTx.apply(this, arguments);
-      }
-      return validateTx;
-    }())
-  }, {
-    key: "broadcastTx",
-    value: function () {
-      var _broadcastTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee17(txHex) {
+      var _validateTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee17(txHex) {
         return _regeneratorRuntime().wrap(function _callee17$(_context17) {
           while (1) switch (_context17.prev = _context17.next) {
             case 0:
               _context17.t0 = this;
               _context17.next = 3;
-              return this.client.call("broadcastTx", [this.chainId, txHex]);
+              return this.client.call("validateTx", [this.chainId, txHex]);
             case 3:
               _context17.t1 = _context17.sent;
               return _context17.abrupt("return", _context17.t0.getResult.call(_context17.t0, _context17.t1));
@@ -711,21 +711,21 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
           }
         }, _callee17, this);
       }));
-      function broadcastTx(_x12) {
-        return _broadcastTx.apply(this, arguments);
+      function validateTx(_x13) {
+        return _validateTx.apply(this, arguments);
       }
-      return broadcastTx;
-    }()
+      return validateTx;
+    }())
   }, {
-    key: "sendCrossTx",
+    key: "broadcastTx",
     value: function () {
-      var _sendCrossTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee18(txHex) {
+      var _broadcastTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee18(txHex) {
         return _regeneratorRuntime().wrap(function _callee18$(_context18) {
           while (1) switch (_context18.prev = _context18.next) {
             case 0:
               _context18.t0 = this;
               _context18.next = 3;
-              return this.client.call("sendCrossTx", [8, txHex]);
+              return this.client.call("broadcastTx", [this.chainId, txHex]);
             case 3:
               _context18.t1 = _context18.sent;
               return _context18.abrupt("return", _context18.t0.getResult.call(_context18.t0, _context18.t1));
@@ -735,21 +735,21 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
           }
         }, _callee18, this);
       }));
-      function sendCrossTx(_x13) {
-        return _sendCrossTx.apply(this, arguments);
+      function broadcastTx(_x14) {
+        return _broadcastTx.apply(this, arguments);
       }
-      return sendCrossTx;
+      return broadcastTx;
     }()
   }, {
-    key: "getContract",
+    key: "sendCrossTx",
     value: function () {
-      var _getContract = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee19(contractAddress) {
+      var _sendCrossTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee19(txHex) {
         return _regeneratorRuntime().wrap(function _callee19$(_context19) {
           while (1) switch (_context19.prev = _context19.next) {
             case 0:
               _context19.t0 = this;
               _context19.next = 3;
-              return this.client.call("getContract", [this.chainId, contractAddress]);
+              return this.client.call("sendCrossTx", [8, txHex]);
             case 3:
               _context19.t1 = _context19.sent;
               return _context19.abrupt("return", _context19.t0.getResult.call(_context19.t0, _context19.t1));
@@ -759,7 +759,31 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
           }
         }, _callee19, this);
       }));
-      function getContract(_x14) {
+      function sendCrossTx(_x15) {
+        return _sendCrossTx.apply(this, arguments);
+      }
+      return sendCrossTx;
+    }()
+  }, {
+    key: "getContract",
+    value: function () {
+      var _getContract = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee20(contractAddress) {
+        return _regeneratorRuntime().wrap(function _callee20$(_context20) {
+          while (1) switch (_context20.prev = _context20.next) {
+            case 0:
+              _context20.t0 = this;
+              _context20.next = 3;
+              return this.client.call("getContract", [this.chainId, contractAddress]);
+            case 3:
+              _context20.t1 = _context20.sent;
+              return _context20.abrupt("return", _context20.t0.getResult.call(_context20.t0, _context20.t1));
+            case 5:
+            case "end":
+              return _context20.stop();
+          }
+        }, _callee20, this);
+      }));
+      function getContract(_x16) {
         return _getContract.apply(this, arguments);
       }
       return getContract;
@@ -767,57 +791,57 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "invokeView",
     value: function () {
-      var _invokeView = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee20(contractAddress, methodName) {
+      var _invokeView = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee21(contractAddress, methodName) {
         var methodDesc,
           args,
           blockHeight,
-          _args20 = arguments;
-        return _regeneratorRuntime().wrap(function _callee20$(_context20) {
-          while (1) switch (_context20.prev = _context20.next) {
+          _args21 = arguments;
+        return _regeneratorRuntime().wrap(function _callee21$(_context21) {
+          while (1) switch (_context21.prev = _context21.next) {
             case 0:
-              methodDesc = _args20.length > 2 && _args20[2] !== undefined ? _args20[2] : null;
-              args = _args20.length > 3 && _args20[3] !== undefined ? _args20[3] : [];
-              blockHeight = _args20.length > 4 && _args20[4] !== undefined ? _args20[4] : null;
+              methodDesc = _args21.length > 2 && _args21[2] !== undefined ? _args21[2] : null;
+              args = _args21.length > 3 && _args21[3] !== undefined ? _args21[3] : [];
+              blockHeight = _args21.length > 4 && _args21[4] !== undefined ? _args21[4] : null;
               if (!blockHeight) {
-                _context20.next = 19;
+                _context21.next = 19;
                 break;
               }
               if (!(typeof blockHeight === "string" && INTEGER_REG.test(blockHeight))) {
-                _context20.next = 13;
+                _context21.next = 13;
                 break;
               }
               blockHeight = Number(blockHeight);
-              _context20.t0 = this;
-              _context20.next = 9;
+              _context21.t0 = this;
+              _context21.next = 9;
               return this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args, blockHeight]);
             case 9:
-              _context20.t1 = _context20.sent;
-              return _context20.abrupt("return", _context20.t0.getResult.call(_context20.t0, _context20.t1));
+              _context21.t1 = _context21.sent;
+              return _context21.abrupt("return", _context21.t0.getResult.call(_context21.t0, _context21.t1));
             case 13:
               if (!(typeof blockHeight === "number")) {
-                _context20.next = 19;
+                _context21.next = 19;
                 break;
               }
-              _context20.t2 = this;
-              _context20.next = 17;
+              _context21.t2 = this;
+              _context21.next = 17;
               return this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args, blockHeight]);
             case 17:
-              _context20.t3 = _context20.sent;
-              return _context20.abrupt("return", _context20.t2.getResult.call(_context20.t2, _context20.t3));
+              _context21.t3 = _context21.sent;
+              return _context21.abrupt("return", _context21.t2.getResult.call(_context21.t2, _context21.t3));
             case 19:
-              _context20.t4 = this;
-              _context20.next = 22;
+              _context21.t4 = this;
+              _context21.next = 22;
               return this.client.call("invokeView", [this.chainId, contractAddress, methodName, methodDesc, args]);
             case 22:
-              _context20.t5 = _context20.sent;
-              return _context20.abrupt("return", _context20.t4.getResult.call(_context20.t4, _context20.t5));
+              _context21.t5 = _context21.sent;
+              return _context21.abrupt("return", _context21.t4.getResult.call(_context21.t4, _context21.t5));
             case 24:
             case "end":
-              return _context20.stop();
+              return _context21.stop();
           }
-        }, _callee20, this);
+        }, _callee21, this);
       }));
-      function invokeView(_x15, _x16) {
+      function invokeView(_x17, _x18) {
         return _invokeView.apply(this, arguments);
       }
       return invokeView;
@@ -825,26 +849,26 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "getContractMethodArgsTypes",
     value: function () {
-      var _getContractMethodArgsTypes = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee21(contractAddress, methodName) {
+      var _getContractMethodArgsTypes = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee22(contractAddress, methodName) {
         var methodDesc,
-          _args21 = arguments;
-        return _regeneratorRuntime().wrap(function _callee21$(_context21) {
-          while (1) switch (_context21.prev = _context21.next) {
+          _args22 = arguments;
+        return _regeneratorRuntime().wrap(function _callee22$(_context22) {
+          while (1) switch (_context22.prev = _context22.next) {
             case 0:
-              methodDesc = _args21.length > 2 && _args21[2] !== undefined ? _args21[2] : null;
-              _context21.t0 = this;
-              _context21.next = 4;
+              methodDesc = _args22.length > 2 && _args22[2] !== undefined ? _args22[2] : null;
+              _context22.t0 = this;
+              _context22.next = 4;
               return this.client.call("getContractMethodArgsTypes", [this.chainId, contractAddress, methodName, methodDesc]);
             case 4:
-              _context21.t1 = _context21.sent;
-              return _context21.abrupt("return", _context21.t0.getResult.call(_context21.t0, _context21.t1));
+              _context22.t1 = _context22.sent;
+              return _context22.abrupt("return", _context22.t0.getResult.call(_context22.t0, _context22.t1));
             case 6:
             case "end":
-              return _context21.stop();
+              return _context22.stop();
           }
-        }, _callee21, this);
+        }, _callee22, this);
       }));
-      function getContractMethodArgsTypes(_x17, _x18) {
+      function getContractMethodArgsTypes(_x19, _x20) {
         return _getContractMethodArgsTypes.apply(this, arguments);
       }
       return getContractMethodArgsTypes;
@@ -852,10 +876,10 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "imputedContractCallGas",
     value: function () {
-      var _imputedContractCallGas = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee22(_ref2) {
+      var _imputedContractCallGas = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee23(_ref2) {
         var _ref2$value, value, contractAddress, methodName, _ref2$methodDesc, methodDesc, _ref2$args, args, _ref2$multyAssetArray, multyAssetArray, parms, multyAssets, _iterator, _step, ma;
-        return _regeneratorRuntime().wrap(function _callee22$(_context22) {
-          while (1) switch (_context22.prev = _context22.next) {
+        return _regeneratorRuntime().wrap(function _callee23$(_context23) {
+          while (1) switch (_context23.prev = _context23.next) {
             case 0:
               _ref2$value = _ref2.value, value = _ref2$value === void 0 ? "0" : _ref2$value, contractAddress = _ref2.contractAddress, methodName = _ref2.methodName, _ref2$methodDesc = _ref2.methodDesc, methodDesc = _ref2$methodDesc === void 0 ? null : _ref2$methodDesc, _ref2$args = _ref2.args, args = _ref2$args === void 0 ? null : _ref2$args, _ref2$multyAssetArray = _ref2.multyAssetArray, multyAssetArray = _ref2$multyAssetArray === void 0 ? null : _ref2$multyAssetArray;
               parms = [this.chainId, this.sender, value, contractAddress, methodName, methodDesc, args];
@@ -875,19 +899,19 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
                 parms.push(multyAssets);
               }
               // console.log("parms:", parms)
-              _context22.t0 = this;
-              _context22.next = 6;
+              _context23.t0 = this;
+              _context23.next = 6;
               return this.client.call("imputedContractCallGas", parms);
             case 6:
-              _context22.t1 = _context22.sent;
-              return _context22.abrupt("return", _context22.t0.getResult.call(_context22.t0, _context22.t1));
+              _context23.t1 = _context23.sent;
+              return _context23.abrupt("return", _context23.t0.getResult.call(_context23.t0, _context23.t1));
             case 8:
             case "end":
-              return _context22.stop();
+              return _context23.stop();
           }
-        }, _callee22, this);
+        }, _callee23, this);
       }));
-      function imputedContractCallGas(_x19) {
+      function imputedContractCallGas(_x21) {
         return _imputedContractCallGas.apply(this, arguments);
       }
       return imputedContractCallGas;
@@ -895,13 +919,13 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "contractCallOffline",
     value: function () {
-      var _contractCallOffline = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee23(_ref3) {
+      var _contractCallOffline = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee24(_ref3) {
         var contractAddress, methodName, _ref3$methodDesc, methodDesc, _ref3$args, args, _ref3$remark, remark, _ref3$value, value, _ref3$multyAssetArray, multyAssetArray, _yield$Promise$all, _yield$Promise$all2, mainBalanceInfo, argsType, gasLimitInfo, senderBalance, nonce, gasLimit, parms;
-        return _regeneratorRuntime().wrap(function _callee23$(_context23) {
-          while (1) switch (_context23.prev = _context23.next) {
+        return _regeneratorRuntime().wrap(function _callee24$(_context24) {
+          while (1) switch (_context24.prev = _context24.next) {
             case 0:
               contractAddress = _ref3.contractAddress, methodName = _ref3.methodName, _ref3$methodDesc = _ref3.methodDesc, methodDesc = _ref3$methodDesc === void 0 ? null : _ref3$methodDesc, _ref3$args = _ref3.args, args = _ref3$args === void 0 ? [] : _ref3$args, _ref3$remark = _ref3.remark, remark = _ref3$remark === void 0 ? null : _ref3$remark, _ref3$value = _ref3.value, value = _ref3$value === void 0 ? "0" : _ref3$value, _ref3$multyAssetArray = _ref3.multyAssetArray, multyAssetArray = _ref3$multyAssetArray === void 0 ? null : _ref3$multyAssetArray;
-              _context23.next = 3;
+              _context24.next = 3;
               return Promise.all([this.getAccountBalance(this.sender, this.chainId), this.getContractMethodArgsTypes(contractAddress, methodName, methodDesc), this.imputedContractCallGas({
                 value: value,
                 contractAddress: contractAddress,
@@ -911,7 +935,7 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
                 multyAssetArray: multyAssetArray
               })]);
             case 3:
-              _yield$Promise$all = _context23.sent;
+              _yield$Promise$all = _context24.sent;
               _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 3);
               mainBalanceInfo = _yield$Promise$all2[0];
               argsType = _yield$Promise$all2[1];
@@ -923,19 +947,19 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               if (multyAssetArray) {
                 parms.push(multyAssetArray);
               }
-              _context23.t0 = this;
-              _context23.next = 16;
+              _context24.t0 = this;
+              _context24.next = 16;
               return this.client.call("contractCallOffline", parms);
             case 16:
-              _context23.t1 = _context23.sent;
-              return _context23.abrupt("return", _context23.t0.getResult.call(_context23.t0, _context23.t1));
+              _context24.t1 = _context24.sent;
+              return _context24.abrupt("return", _context24.t0.getResult.call(_context24.t0, _context24.t1));
             case 18:
             case "end":
-              return _context23.stop();
+              return _context24.stop();
           }
-        }, _callee23, this);
+        }, _callee24, this);
       }));
-      function contractCallOffline(_x20) {
+      function contractCallOffline(_x22) {
         return _contractCallOffline.apply(this, arguments);
       }
       return contractCallOffline;
@@ -943,29 +967,29 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "validateContractCall",
     value: function () {
-      var _validateContractCall = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee24(_ref4) {
+      var _validateContractCall = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee25(_ref4) {
         var contractAddress, methodName, _ref4$methodDesc, methodDesc, _ref4$args, args, _ref4$value, value, _ref4$multyAssetArray, multyAssetArray, gasLimit, price, parms;
-        return _regeneratorRuntime().wrap(function _callee24$(_context24) {
-          while (1) switch (_context24.prev = _context24.next) {
+        return _regeneratorRuntime().wrap(function _callee25$(_context25) {
+          while (1) switch (_context25.prev = _context25.next) {
             case 0:
               contractAddress = _ref4.contractAddress, methodName = _ref4.methodName, _ref4$methodDesc = _ref4.methodDesc, methodDesc = _ref4$methodDesc === void 0 ? null : _ref4$methodDesc, _ref4$args = _ref4.args, args = _ref4$args === void 0 ? [] : _ref4$args, _ref4$value = _ref4.value, value = _ref4$value === void 0 ? "0" : _ref4$value, _ref4$multyAssetArray = _ref4.multyAssetArray, multyAssetArray = _ref4$multyAssetArray === void 0 ? null : _ref4$multyAssetArray, gasLimit = _ref4.gasLimit, price = _ref4.price;
               parms = [this.chainId, this.sender, value, gasLimit, price, contractAddress, methodName, methodDesc, args];
               if (multyAssetArray) {
                 parms.push(multyAssetArray);
               }
-              _context24.t0 = this;
-              _context24.next = 6;
+              _context25.t0 = this;
+              _context25.next = 6;
               return this.client.call("validateContractCall", parms);
             case 6:
-              _context24.t1 = _context24.sent;
-              return _context24.abrupt("return", _context24.t0.getResult.call(_context24.t0, _context24.t1));
+              _context25.t1 = _context25.sent;
+              return _context25.abrupt("return", _context25.t0.getResult.call(_context25.t0, _context25.t1));
             case 8:
             case "end":
-              return _context24.stop();
+              return _context25.stop();
           }
-        }, _callee24, this);
+        }, _callee25, this);
       }));
-      function validateContractCall(_x21) {
+      function validateContractCall(_x23) {
         return _validateContractCall.apply(this, arguments);
       }
       return validateContractCall;
@@ -973,13 +997,13 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "updateMultyAsset",
     value: function () {
-      var _updateMultyAsset = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee25(multyAssetArray) {
+      var _updateMultyAsset = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee26(multyAssetArray) {
         var length, call, i, multyAsset, rs, _multyAsset, r;
-        return _regeneratorRuntime().wrap(function _callee25$(_context25) {
-          while (1) switch (_context25.prev = _context25.next) {
+        return _regeneratorRuntime().wrap(function _callee26$(_context26) {
+          while (1) switch (_context26.prev = _context26.next) {
             case 0:
               if (!multyAssetArray) {
-                _context25.next = 17;
+                _context26.next = 17;
                 break;
               }
               length = multyAssetArray.length;
@@ -988,20 +1012,20 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
                 multyAsset = multyAssetArray[i];
                 call.push(this.getAccountBalance(this.sender, multyAsset.assetChainId, multyAsset.assetId));
               }
-              _context25.next = 6;
+              _context26.next = 6;
               return Promise.all(call);
             case 6:
-              rs = _context25.sent;
+              rs = _context26.sent;
               i = 0;
             case 8:
               if (!(i < length)) {
-                _context25.next = 17;
+                _context26.next = 17;
                 break;
               }
               _multyAsset = multyAssetArray[i];
               r = rs[i];
               if (!new _bignumber["default"](r.balance).lt(new _bignumber["default"](_multyAsset.value))) {
-                _context25.next = 13;
+                _context26.next = 13;
                 break;
               }
               throw new Error("Your balance of " + _multyAsset.assetChainId + "-" + _multyAsset.assetId + " is not enough.");
@@ -1009,17 +1033,17 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               multyAssetArray[i].nonce = r.nonce;
             case 14:
               i++;
-              _context25.next = 8;
+              _context26.next = 8;
               break;
             case 17:
-              return _context25.abrupt("return", multyAssetArray);
+              return _context26.abrupt("return", multyAssetArray);
             case 18:
             case "end":
-              return _context25.stop();
+              return _context26.stop();
           }
-        }, _callee25, this);
+        }, _callee26, this);
       }));
-      function updateMultyAsset(_x22) {
+      function updateMultyAsset(_x24) {
         return _updateMultyAsset.apply(this, arguments);
       }
       return updateMultyAsset;
@@ -1027,7 +1051,7 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "createContractTx",
     value: function () {
-      var _createContractTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee26(callInfo, remark, multyAssetArray, nulsValueToOthers) {
+      var _createContractTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee27(callInfo, remark, multyAssetArray, nulsValueToOthers) {
         var gasLimitTimes,
           gasMax,
           _yield$Promise$all3,
@@ -1045,13 +1069,13 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
           multyAssets,
           inOrOutputs,
           tAssemble,
-          _args26 = arguments;
-        return _regeneratorRuntime().wrap(function _callee26$(_context26) {
-          while (1) switch (_context26.prev = _context26.next) {
+          _args27 = arguments;
+        return _regeneratorRuntime().wrap(function _callee27$(_context27) {
+          while (1) switch (_context27.prev = _context27.next) {
             case 0:
-              gasLimitTimes = _args26.length > 4 && _args26[4] !== undefined ? _args26[4] : 1;
-              gasMax = _args26.length > 5 && _args26[5] !== undefined ? _args26[5] : 0;
-              _context26.next = 4;
+              gasLimitTimes = _args27.length > 4 && _args27[4] !== undefined ? _args27[4] : 1;
+              gasMax = _args27.length > 5 && _args27[5] !== undefined ? _args27[5] : 0;
+              _context27.next = 4;
               return Promise.all([this.getAccountBalance(this.sender, this.chainId), this.getContractMethodArgsTypes(callInfo.contractAddress, callInfo.methodName, callInfo.methodDesc), this.imputedContractCallGas({
                 value: callInfo.value,
                 contractAddress: callInfo.contractAddress,
@@ -1061,7 +1085,7 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
                 multyAssetArray: multyAssetArray
               })]);
             case 4:
-              _yield$Promise$all3 = _context26.sent;
+              _yield$Promise$all3 = _context27.sent;
               _yield$Promise$all4 = _slicedToArray(_yield$Promise$all3, 3);
               mainBalanceInfo = _yield$Promise$all4[0];
               argsType = _yield$Promise$all4[1];
@@ -1088,21 +1112,21 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
               if (value.gt(new _bignumber["default"](0))) {
                 transferInfo['value'] = value;
               }
-              _context26.next = 21;
+              _context27.next = 21;
               return this.updateMultyAsset(multyAssetArray);
             case 21:
-              multyAssets = _context26.sent;
+              multyAssets = _context27.sent;
               // console.log("multyAssets:", multyAssets);
               inOrOutputs = (0, _utils.makeInputsOrOutputs)(transferInfo, mainBalanceInfo, multyAssets, nulsValueToOthers); // console.log("inOrOutputs:", inOrOutputs);
               tAssemble = _index["default"].transactionAssemble(inOrOutputs.inputs, inOrOutputs.outputs, remark, 16, callData);
-              return _context26.abrupt("return", tAssemble);
+              return _context27.abrupt("return", tAssemble);
             case 25:
             case "end":
-              return _context26.stop();
+              return _context27.stop();
           }
-        }, _callee26, this);
+        }, _callee27, this);
       }));
-      function createContractTx(_x23, _x24, _x25, _x26) {
+      function createContractTx(_x25, _x26, _x27, _x28) {
         return _createContractTx.apply(this, arguments);
       }
       return createContractTx;
@@ -1110,52 +1134,52 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "callContract",
     value: function () {
-      var _callContract = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee27(callInfo, remark, multyAssetArray, nulsValueToOthers) {
+      var _callContract = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee28(callInfo, remark, multyAssetArray, nulsValueToOthers) {
         var gasLimitTimes,
           gasMax,
           pub,
           tAssemble,
           txhex,
           result,
-          _args27 = arguments;
-        return _regeneratorRuntime().wrap(function _callee27$(_context27) {
-          while (1) switch (_context27.prev = _context27.next) {
+          _args28 = arguments;
+        return _regeneratorRuntime().wrap(function _callee28$(_context28) {
+          while (1) switch (_context28.prev = _context28.next) {
             case 0:
-              gasLimitTimes = _args27.length > 4 && _args27[4] !== undefined ? _args27[4] : 1;
-              gasMax = _args27.length > 5 && _args27[5] !== undefined ? _args27[5] : 0;
+              gasLimitTimes = _args28.length > 4 && _args28[4] !== undefined ? _args28[4] : 1;
+              gasMax = _args28.length > 5 && _args28[5] !== undefined ? _args28[5] : 0;
               pub = (0, _utils.getPublic)(this.accountPri);
-              _context27.next = 5;
+              _context28.next = 5;
               return this.createContractTx(callInfo, remark, multyAssetArray, nulsValueToOthers, gasLimitTimes, gasMax);
             case 5:
-              tAssemble = _context27.sent;
+              tAssemble = _context28.sent;
               txhex = _index["default"].transactionSerialize(this.accountPri, pub, tAssemble); // console.log("txhex:",txhex);
-              _context27.next = 9;
+              _context28.next = 9;
               return this.validateTx(txhex);
             case 9:
-              result = _context27.sent;
+              result = _context28.sent;
               if (!("value" in result)) {
-                _context27.next = 17;
+                _context28.next = 17;
                 break;
               }
               console.debug("broadcast ".concat(callInfo.methodName, " txHash: ").concat(result.value));
-              _context27.next = 14;
+              _context28.next = 14;
               return this.broadcastTx(txhex);
             case 14:
-              result = _context27.sent;
+              result = _context28.sent;
               if (!("value" in result && result.value)) {
-                _context27.next = 17;
+                _context28.next = 17;
                 break;
               }
-              return _context27.abrupt("return", result.hash);
+              return _context28.abrupt("return", result.hash);
             case 17:
-              return _context27.abrupt("return", null);
+              return _context28.abrupt("return", null);
             case 18:
             case "end":
-              return _context27.stop();
+              return _context28.stop();
           }
-        }, _callee27, this);
+        }, _callee28, this);
       }));
-      function callContract(_x27, _x28, _x29, _x30) {
+      function callContract(_x29, _x30, _x31, _x32) {
         return _callContract.apply(this, arguments);
       }
       return callContract;
@@ -1163,17 +1187,17 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "transfer",
     value: function () {
-      var _transfer = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee28(toAddress, value, remark, multyAssets) {
+      var _transfer = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee29(toAddress, value, remark, multyAssets) {
         var _value, pub, balanceInfo, transferInfo, inOrOutputs, tAssemble, newFee, txhex, result;
-        return _regeneratorRuntime().wrap(function _callee28$(_context28) {
-          while (1) switch (_context28.prev = _context28.next) {
+        return _regeneratorRuntime().wrap(function _callee29$(_context29) {
+          while (1) switch (_context29.prev = _context29.next) {
             case 0:
               _value = new _bignumber["default"](value);
               pub = (0, _utils.getPublic)(this.accountPri);
-              _context28.next = 4;
+              _context29.next = 4;
               return this.getAccountBalance(this.sender, this.chainId);
             case 4:
-              balanceInfo = _context28.sent;
+              balanceInfo = _context29.sent;
               transferInfo = {
                 fromAddress: this.sender,
                 assetsChainId: this.chainId,
@@ -1184,13 +1208,13 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
                 toAddress: toAddress
               };
               if (!multyAssets) {
-                _context28.next = 10;
+                _context29.next = 10;
                 break;
               }
-              _context28.next = 9;
+              _context29.next = 9;
               return this.updateMultyAsset(multyAssets);
             case 9:
-              multyAssets = _context28.sent;
+              multyAssets = _context29.sent;
             case 10:
               // console.log("multyAssets:", multyAssets);
               inOrOutputs = (0, _utils.makeInputsOrOutputs)(transferInfo, balanceInfo, multyAssets); // console.log("inOrOutputs:", inOrOutputs);
@@ -1202,33 +1226,33 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
                 tAssemble = _index["default"].transactionAssemble(inOrOutputs.inputs, inOrOutputs.outputs, remark, 2);
               }
               txhex = _index["default"].transactionSerialize(this.accountPri, pub, tAssemble);
-              _context28.next = 17;
+              _context29.next = 17;
               return this.validateTx(txhex);
             case 17:
-              result = _context28.sent;
+              result = _context29.sent;
               if (!("value" in result)) {
-                _context28.next = 25;
+                _context29.next = 25;
                 break;
               }
               console.debug("broadcast transfer txHash: ".concat(result.value));
-              _context28.next = 22;
+              _context29.next = 22;
               return this.broadcastTx(txhex);
             case 22:
-              result = _context28.sent;
+              result = _context29.sent;
               if (!("value" in result && result.value)) {
-                _context28.next = 25;
+                _context29.next = 25;
                 break;
               }
-              return _context28.abrupt("return", result.hash);
+              return _context29.abrupt("return", result.hash);
             case 25:
-              return _context28.abrupt("return", null);
+              return _context29.abrupt("return", null);
             case 26:
             case "end":
-              return _context28.stop();
+              return _context29.stop();
           }
-        }, _callee28, this);
+        }, _callee29, this);
       }));
-      function transfer(_x31, _x32, _x33, _x34) {
+      function transfer(_x33, _x34, _x35, _x36) {
         return _transfer.apply(this, arguments);
       }
       return transfer;
@@ -1236,23 +1260,23 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "contract",
     value: function () {
-      var _contract = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee29(address) {
+      var _contract = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee30(address) {
         var contract;
-        return _regeneratorRuntime().wrap(function _callee29$(_context29) {
-          while (1) switch (_context29.prev = _context29.next) {
+        return _regeneratorRuntime().wrap(function _callee30$(_context30) {
+          while (1) switch (_context30.prev = _context30.next) {
             case 0:
               contract = new _contract2.Contract(address, this);
-              _context29.next = 3;
+              _context30.next = 3;
               return contract.init();
             case 3:
-              return _context29.abrupt("return", contract);
+              return _context30.abrupt("return", contract);
             case 4:
             case "end":
-              return _context29.stop();
+              return _context30.stop();
           }
-        }, _callee29, this);
+        }, _callee30, this);
       }));
-      function contract(_x35) {
+      function contract(_x37) {
         return _contract.apply(this, arguments);
       }
       return contract;
@@ -1265,59 +1289,59 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "waitingResult",
     value: (function () {
-      var _waitingResult = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee30(txHash) {
+      var _waitingResult = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee31(txHash) {
         var timeout,
           result,
           second,
-          _args30 = arguments;
-        return _regeneratorRuntime().wrap(function _callee30$(_context30) {
-          while (1) switch (_context30.prev = _context30.next) {
+          _args31 = arguments;
+        return _regeneratorRuntime().wrap(function _callee31$(_context31) {
+          while (1) switch (_context31.prev = _context31.next) {
             case 0:
-              timeout = _args30.length > 1 && _args30[1] !== undefined ? _args30[1] : 20;
+              timeout = _args31.length > 1 && _args31[1] !== undefined ? _args31[1] : 20;
               result = null;
               second = 0;
             case 3:
               if (!true) {
-                _context30.next = 19;
+                _context31.next = 19;
                 break;
               }
-              _context30.next = 6;
+              _context31.next = 6;
               return this.getContractTxResult(txHash)["catch"](function (reason) {
                 // console.error("waitingResult error:", reason);
               });
             case 6:
-              result = _context30.sent;
+              result = _context31.sent;
               if (result) {
-                _context30.next = 16;
+                _context31.next = 16;
                 break;
               }
-              _context30.next = 10;
+              _context31.next = 10;
               return (0, _utils.sleep)(1000);
             case 10:
               second += 1;
               if (!(second > timeout)) {
-                _context30.next = 13;
+                _context31.next = 13;
                 break;
               }
               throw new Error("waitingResult timeout");
             case 13:
               ;
-              _context30.next = 17;
+              _context31.next = 17;
               break;
             case 16:
-              return _context30.abrupt("break", 19);
+              return _context31.abrupt("break", 19);
             case 17:
-              _context30.next = 3;
+              _context31.next = 3;
               break;
             case 19:
-              return _context30.abrupt("return", result);
+              return _context31.abrupt("return", result);
             case 20:
             case "end":
-              return _context30.stop();
+              return _context31.stop();
           }
-        }, _callee30, this);
+        }, _callee31, this);
       }));
-      function waitingResult(_x36) {
+      function waitingResult(_x38) {
         return _waitingResult.apply(this, arguments);
       }
       return waitingResult;
@@ -1331,60 +1355,60 @@ var NULSAPI = exports.NULSAPI = /*#__PURE__*/function () {
   }, {
     key: "waitingTx",
     value: (function () {
-      var _waitingTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee31(txHash) {
+      var _waitingTx = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee32(txHash) {
         var timeout,
           result,
           second,
-          _args31 = arguments;
-        return _regeneratorRuntime().wrap(function _callee31$(_context31) {
-          while (1) switch (_context31.prev = _context31.next) {
+          _args32 = arguments;
+        return _regeneratorRuntime().wrap(function _callee32$(_context32) {
+          while (1) switch (_context32.prev = _context32.next) {
             case 0:
-              timeout = _args31.length > 1 && _args31[1] !== undefined ? _args31[1] : 20;
+              timeout = _args32.length > 1 && _args32[1] !== undefined ? _args32[1] : 20;
               result = null;
               second = 0;
             case 3:
               if (!true) {
-                _context31.next = 20;
+                _context32.next = 20;
                 break;
               }
-              _context31.next = 6;
+              _context32.next = 6;
               return this.getTx(txHash)["catch"](function (reason) {
                 // console.error("waitingTx error:", reason);
               });
             case 6:
-              result = _context31.sent;
+              result = _context32.sent;
               if (!(!result || result.status == 0)) {
-                _context31.next = 17;
+                _context32.next = 17;
                 break;
               }
-              _context31.next = 10;
+              _context32.next = 10;
               return (0, _utils.sleep)(1000);
             case 10:
               second += 1;
               if (!(second > timeout)) {
-                _context31.next = 14;
+                _context32.next = 14;
                 break;
               }
               console.debug("result:", result);
               throw new Error("waitingTx timeout");
             case 14:
               ;
-              _context31.next = 18;
+              _context32.next = 18;
               break;
             case 17:
-              return _context31.abrupt("break", 20);
+              return _context32.abrupt("break", 20);
             case 18:
-              _context31.next = 3;
+              _context32.next = 3;
               break;
             case 20:
-              return _context31.abrupt("return", result);
+              return _context32.abrupt("return", result);
             case 21:
             case "end":
-              return _context31.stop();
+              return _context32.stop();
           }
-        }, _callee31, this);
+        }, _callee32, this);
       }));
-      function waitingTx(_x37) {
+      function waitingTx(_x39) {
         return _waitingTx.apply(this, arguments);
       }
       return waitingTx;
