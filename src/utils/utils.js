@@ -3,6 +3,7 @@ import config from "../config.js";
 import sha3 from "js-sha3";
 import bs58 from "bs58";
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
+import eccrypto from "nuls-sdk-js/lib/crypto/eciesCrypto.js";
 import BufferReader from "nuls-sdk-js/lib/utils/bufferreader.js";
 import txs from "nuls-sdk-js/lib/model/txs.js";
 
@@ -534,4 +535,13 @@ export function parseTransaction(bufferData) {
     const tt = new txs.Transaction();
     tt.parse(reader);
     return tt;
+}
+
+export async function encryptMsg(msg, pub) {
+    pub = pub.startsWith('0x') ? pub : '0x' + pub;
+    const uncompressedPublicKey = ec.keyFromPublic(pub, "hex");
+    const bufferPub = Buffer.from(uncompressedPublicKey.substr(2), 'hex');
+    const bufferData = Buffer.from(msg);
+    const encrypted = await eccrypto.encrypt(bufferPub, bufferData);
+    return encrypted.toString('hex');
 }

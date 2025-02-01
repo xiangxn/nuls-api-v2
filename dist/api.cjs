@@ -22,6 +22,12 @@ Object.defineProperty(exports, "deepCloneInstance", {
     return _utils.deepCloneInstance;
   }
 });
+Object.defineProperty(exports, "encryptMsg", {
+  enumerable: true,
+  get: function get() {
+    return _utils.encryptMsg;
+  }
+});
 Object.defineProperty(exports, "fromNULS", {
   enumerable: true,
   get: function get() {

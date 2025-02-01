@@ -12,6 +12,7 @@ export { stringToByte, twoDimensionalArray, makeInputsOrOutputs, makeCallData, c
 export { hashMessage, signMessage, verifySign, getPublic, parseNULS, fromNULS, getAddressByPub, getBytesAddress } from "./utils/utils.js";
 export { getStringAddressBase, getStringAddressByBytes, getSender, sleep, verifyAddress, isAddress, getEvent } from "./utils/utils.js";
 export { newProgramEncodePacked, parseProgramEncodePacked, parseTransaction } from "./utils/utils.js";
+export { encryptMsg } from "./utils/utils.js";
 export { Storage } from "./utils/storage.js";
 
 export class NULSAPI {
