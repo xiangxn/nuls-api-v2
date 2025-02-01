@@ -5,6 +5,7 @@ import { BigNumber } from "bignumber.js";
 // const JsonRpcClient = require("./client");
 import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, fromNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
 import { getSender, isAddress, parseTransaction } from "./src/api.js";
+import { encryptMsg } from "./src/api.js"
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
@@ -131,7 +132,16 @@ async function main() {
 
     // await testNewContract();
 
-    await testAsset();
+    // await testAsset();
+
+    await testEncryptMsg();
+}
+
+async function testEncryptMsg() {
+    const pub = "026c51ef77f20de89defcb97a125921c637c06cbcfa0bd1d38e3506243333b007b";
+
+    const data = await encryptMsg(pub,pub)
+    console.log("data:", data)
 }
 
 async function testAsset() {

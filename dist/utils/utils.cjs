@@ -558,9 +558,9 @@ function _encryptMsg() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          pub = pub.startsWith('0x') ? pub : '0x' + pub;
+          pub = pub.startsWith('0x') ? "".substring(2) : pub;
           uncompressedPublicKey = ec.keyFromPublic(pub, "hex");
-          bufferPub = Buffer.from(uncompressedPublicKey.substr(2), 'hex');
+          bufferPub = Buffer.from(uncompressedPublicKey.getPublic('hex'), 'hex');
           bufferData = Buffer.from(msg);
           _context.next = 6;
           return _eciesCrypto["default"].encrypt(bufferPub, bufferData);

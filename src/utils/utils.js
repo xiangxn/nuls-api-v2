@@ -538,9 +538,9 @@ export function parseTransaction(bufferData) {
 }
 
 export async function encryptMsg(msg, pub) {
-    pub = pub.startsWith('0x') ? pub : '0x' + pub;
+    pub = pub.startsWith('0x') ? "".substring(2) : pub;
     const uncompressedPublicKey = ec.keyFromPublic(pub, "hex");
-    const bufferPub = Buffer.from(uncompressedPublicKey.substr(2), 'hex');
+    const bufferPub = Buffer.from(uncompressedPublicKey.getPublic('hex'), 'hex');
     const bufferData = Buffer.from(msg);
     const encrypted = await eccrypto.encrypt(bufferPub, bufferData);
     return encrypted.toString('hex');
