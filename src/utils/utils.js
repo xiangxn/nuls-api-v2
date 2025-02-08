@@ -500,6 +500,7 @@ export function verifyAddress(stringAddress) {
 }
 
 export function isAddress(stringAddress) {
+    if (!stringAddress || stringAddress === "") return false;
     let result = verifyAddress(stringAddress);
     return result.right;
 }

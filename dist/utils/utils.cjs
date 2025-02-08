@@ -507,6 +507,7 @@ function verifyAddress(stringAddress) {
   return result;
 }
 function isAddress(stringAddress) {
+  if (!stringAddress || stringAddress === "") return false;
   var result = verifyAddress(stringAddress);
   return result.right;
 }
