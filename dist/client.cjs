@@ -15,6 +15,9 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function isBrowser() {
+  return typeof window !== "undefined" && typeof window.document !== "undefined";
+}
 var JsonRpcClient = exports.JsonRpcClient = /*#__PURE__*/function () {
   /**
    * 创建一个 JSON-RPC 客户端
@@ -46,11 +49,13 @@ var JsonRpcClient = exports.JsonRpcClient = /*#__PURE__*/function () {
     var config = {
       baseURL: url,
       headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+        "Content-Type": "application/json;charset=UTF-8"
       },
       timeout: 5000 // 设置超时时间（可根据需求调整
     };
+    if (isBrowser() === false) {
+      config.headers['User-Agent'] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
+    }
     if (proxy && "host" in proxy && "port" in proxy) {
       config = Object.assign(config, {
         proxy: proxy
