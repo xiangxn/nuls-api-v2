@@ -1,5 +1,9 @@
 import axios from "axios";
 
+function isBrowser() {
+    return typeof window !== "undefined" && typeof window.document !== "undefined";
+}
+
 export class JsonRpcClient {
     /**
      * 创建一个 JSON-RPC 客户端
@@ -20,11 +24,13 @@ export class JsonRpcClient {
         let config = {
             baseURL: url,
             headers: {
-                "Content-Type": "application/json;charset=UTF-8",
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+                "Content-Type": "application/json;charset=UTF-8"
             },
             timeout: 5000, // 设置超时时间（可根据需求调整
         };
+        if (isBrowser() === false) {
+            config.headers['User-Agent'] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+        }
         if (proxy && "host" in proxy && "port" in proxy) {
             config = Object.assign(config, { proxy });
         } else if (httpsAgent) {
