@@ -508,8 +508,12 @@ function verifyAddress(stringAddress) {
 }
 function isAddress(stringAddress) {
   if (!stringAddress || stringAddress === "") return false;
-  var result = verifyAddress(stringAddress);
-  return result.right;
+  try {
+    var result = verifyAddress(stringAddress);
+    return result.right;
+  } catch (_unused) {
+    return false;
+  }
 }
 function newProgramEncodePacked(args) {
   return _sdk["default"].newProgramEncodePacked(args);
