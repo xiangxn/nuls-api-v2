@@ -132,7 +132,7 @@ var Contract = exports.Contract = /*#__PURE__*/function () {
                               args[_key2] = _args[_key2];
                             }
                             lastArg = args[args.length - 1];
-                            if (lastArg && _typeof(lastArg) === "object" && !(lastArg instanceof _bignumber["default"])) {
+                            if (lastArg && _typeof(lastArg) === "object" && !(lastArg instanceof _bignumber["default"]) && !Array.isArray(lastArg)) {
                               opt = args.pop();
                               if ("blockHeight" in opt) {
                                 blockHeight = opt.blockHeight;

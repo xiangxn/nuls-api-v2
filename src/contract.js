@@ -77,7 +77,7 @@ export class Contract {
                     this[functionName] = async (...args) => {
                         let blockHeight = null;
                         let lastArg = args[args.length - 1];
-                        if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber)) {
+                        if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber) && !Array.isArray(lastArg)) {
                             let opt = args.pop();
                             if ("blockHeight" in opt) {
                                 blockHeight = opt.blockHeight;

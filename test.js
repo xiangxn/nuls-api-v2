@@ -134,13 +134,22 @@ async function main() {
 
     // await testAsset();
 
-    await testEncryptMsg();
+    // await testEncryptMsg();
+
+    await testCallContract();
+}
+
+async function testCallContract() {
+    const ids = ["42541681644358322622339264228"]
+    let contract = await sdk.contract("tNULSeBaN7MkdczPYAQH4GvKrhmCQUB7p7Qtr2")
+    let result = await contract.getProductsByIds(ids)
+    console.log("result:", result)
 }
 
 async function testEncryptMsg() {
     const pub = "026c51ef77f20de89defcb97a125921c637c06cbcfa0bd1d38e3506243333b007b";
 
-    const data = await encryptMsg(pub,pub)
+    const data = await encryptMsg(pub, pub)
     console.log("data:", data)
 }
 
@@ -160,7 +169,7 @@ async function testNewContract() {
     let ser = tx.txSerialize().toString('hex');
     console.log("ser:", ser);
 
-    let ntx = parseTransaction(Buffer.from(ser,'hex'));
+    let ntx = parseTransaction(Buffer.from(ser, 'hex'));
     console.log("ntx:", ntx);
 }
 
