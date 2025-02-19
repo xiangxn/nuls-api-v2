@@ -15,7 +15,7 @@ function createParams(address, method, ...args) {
     let lastArg = args[args.length - 1];
     let gasLimitTimes = 1;
     let gasLimit = 0;
-    if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber)) {
+    if (lastArg && typeof lastArg === "object" && !(lastArg instanceof BigNumber) && !Array.isArray(lastArg)) {
         let opt = callInfo.args.pop();
         if (method.payable && "value" in opt) {
             callInfo.value = opt.value;
