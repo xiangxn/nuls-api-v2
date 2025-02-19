@@ -33,7 +33,7 @@ function createParams(address, method) {
   var lastArg = args[args.length - 1];
   var gasLimitTimes = 1;
   var gasLimit = 0;
-  if (lastArg && _typeof(lastArg) === "object" && !(lastArg instanceof _bignumber["default"])) {
+  if (lastArg && _typeof(lastArg) === "object" && !(lastArg instanceof _bignumber["default"]) && !Array.isArray(lastArg)) {
     var opt = callInfo.args.pop();
     if (method.payable && "value" in opt) {
       callInfo.value = opt.value;
