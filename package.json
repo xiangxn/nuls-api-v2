@@ -18,7 +18,7 @@
     "build": "yarn build:cjs && cp src/api.js src/api.ts && tsc -d --emitDeclarationOnly --outDir temp --lib es2016,dom src/api.ts && rm src/api.ts && cp temp/api.d.ts src/api.d.ts && rm -rf temp"
   },
   "dependencies": {
-    "axios": "^1.7.7",
+    "axios": "1.7.7",
     "bignumber.js": "^9.1.2",
     "bs58": "^6.0.0",
     "crypto-js": "^4.2.0",

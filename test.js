@@ -136,7 +136,14 @@ async function main() {
 
     // await testEncryptMsg();
 
-    await testCallContract();
+    // await testCallContract();
+
+    await testGetBlock();
+}
+
+async function testGetBlock() {
+    const block = await sdk.getLatestHeight();
+    console.log("block:", block)
 }
 
 async function testCallContract() {
