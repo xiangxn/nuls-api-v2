@@ -102,4 +102,65 @@ export class JsonRpcClient {
             }
         }
     }
+
+    procResult(result, value) {
+        if ("result" in value) {
+            if (typeof value.result === "object" && "result" in value.result) {
+                result.push(value.result);
+            } else {
+                result.push({ result: value.result }); // 成功返回结果
+            }
+        } else if ("success" in value && !value.success) {
+            result.push({ error: value.data });
+        } else if ("error" in value) {
+            if ("data" in value.error && value.error.data) {
+                result.push({ error: value.error.data.replace("Data error;", "").replace("contract error - ", "") })
+            } else {
+                result.push({ error: value.error.message.replace("Data error;", "").replace("contract error - ", "") })
+            }
+        } else {
+            result.push(value.result);
+        }
+    }
+
+    async batchCall(methods, params = [[]]) {
+        if (!methods || methods.length < 1) return [];
+        const payloads = [];
+        for (let i = 0; i < methods.length; i++) {
+            payloads.push({
+                jsonrpc: "2.0",
+                method: methods[i],
+                params: params[i],
+                id: this.id++
+            })
+        }
+        let attempt = 0;
+        while (attempt <= this.maxRetries) {
+            try {
+                let result = [];
+                const response = await this.client.post("/", payloads);
+                // console.log(response);
+                if (response.status == 200) {
+                    if (response.data instanceof Array) {
+                        response.data.forEach((value) => {
+                            this.procResult(result, value)
+                        });
+                    } else {
+                        this.procResult(result, response.data)
+                    }
+                }
+                return result;
+            } catch (error) {
+                attempt++;
+                if (attempt > this.maxRetries) {
+                    console.error(`Max retries reached for methods ${methods}`);
+                    throw error; // 超过最大重试次数，抛出错误
+                }
+                console.warn(
+                    `Retrying (${attempt}/${this.maxRetries}) methods: ${methods}, error: ${error.message}`
+                );
+                await this.delay(this.retryDelay); // 等待后重试
+            }
+        }
+    }
 }

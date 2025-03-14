@@ -3,9 +3,9 @@ import { BigNumber } from "bignumber.js";
 // const nulsSdkJs = require("nuls-sdk-js");
 
 // const JsonRpcClient = require("./client");
-import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, fromNULS, getStringAddressBase, getAddressByPub } from "./src/api.js";
-import { getSender, isAddress, parseTransaction } from "./src/api.js";
-import { encryptMsg } from "./src/api.js"
+import { NULSAPI, signMessage, verifySign, hashMessage, parseNULS, fromNULS, getStringAddressBase, getAddressByPub } from "../src/api.js";
+import { getSender, isAddress, parseTransaction } from "../src/api.js";
+import { encryptMsg } from "../src/api.js"
 
 import nulsdk from "nuls-sdk-js/lib/api/sdk.js";
 
@@ -138,7 +138,7 @@ async function main() {
 
     // await testCallContract();
 
-    await testGetBlock();
+    // await testGetBlock();
 }
 
 async function testGetBlock() {

@@ -137,6 +137,22 @@ export class NULSAPI {
         return this.getResult(await this.client.call("getBlockByHash", [this.chainId, hash]));
     }
 
+    async getBlocks(startBlock, endBlock) {
+        const result = [];
+        if (endBlock < startBlock) return result;
+        const methods = [];
+        const params = [];
+        for (let i = startBlock; i <= endBlock; i++) {
+            methods.push("getBlockByHeight");
+            params.push([this.chainId, i]);
+        }
+        const res = await this.client.batchCall(methods, params);
+        res.forEach(value => {
+            result.push(this.getResult(value))
+        });
+        return result;
+    }
+
     async getLatestHeight() {
         return this.getResult(await this.client.call("getLatestHeight", [this.chainId]));
     }
