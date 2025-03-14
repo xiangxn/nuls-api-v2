@@ -15,8 +15,7 @@
   "scripts": {
     "test": "node test/test.js",
     "build:cjs": "babel src --out-dir dist --out-file-extension .cjs",
-    "build": "yarn build:cjs && cp src/api.js src/api.ts && tsc -d --emitDeclarationOnly --outDir temp --lib es2016,dom src/api.ts && rm src/api.ts && cp temp/api.d.ts src/api.d.ts && rm -rf temp",
-    "postinstall":"yarn add -D @babel/cli @babel/core @babel/plugin-transform-modules-commonjs @babel/preset-env babel-plugin-replace-import-extension typescript && yarn build"
+    "build": "yarn build:cjs && cp src/api.js src/api.ts && tsc -d --emitDeclarationOnly --outDir temp --lib es2016,dom src/api.ts && rm src/api.ts && cp temp/api.d.ts src/api.d.ts && rm -rf temp"
   },
   "dependencies": {
     "axios": "1.7.7",

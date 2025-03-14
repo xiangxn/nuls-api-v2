@@ -47,6 +47,7 @@ export declare class NULSAPI {
     getBestBlock(): Promise<any>;
     getBlockByHeight(blockHeight: any): Promise<any>;
     getBlockByHash(hash: any): Promise<any>;
+    getBlocks(startBlock: any, endBlock: any): Promise<any[]>;
     getLatestHeight(): Promise<any>;
     getCrossAssetInfo(assetChainId: any, assetId: any): Promise<any>;
     getTx(txHash: any): Promise<any>;
