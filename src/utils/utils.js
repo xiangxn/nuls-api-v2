@@ -129,7 +129,7 @@ export function makeInputsOrOutputs(transferInfo, balanceInfo, multyAssets, nuls
         }
     }
     if (new BigNumber(balanceInfo.balance).lt(_newAmount)) {
-        throw new Error("Your balance of NULS is not enough.");
+        throw new Error("Your balance of NAI is not enough.");
     }
     let inputs = [{
         address: transferInfo.fromAddress,
@@ -353,14 +353,14 @@ export function getPublic(privateKey) {
     return ec.keyFromPrivate(privateKey).getPublic(true, "hex");
 }
 
-export function parseNULS(amount, decimals = 8) {
+export function parseNULS(amount, decimals = 4) {
     let a = new BigNumber(amount);
     let b = a.times((new BigNumber(10)).pow(decimals));
     // return BigInt(b.toFixed(0));
     return b.integerValue(BigNumber.ROUND_DOWN);
 }
 
-export function fromNULS(amount, decimals = 8) {
+export function fromNULS(amount, decimals = 4) {
     let a = new BigNumber(amount);
     let b = a.div((new BigNumber(10)).pow(decimals));
     return parseFloat(b.toFixed(decimals, BigNumber.ROUND_DOWN))

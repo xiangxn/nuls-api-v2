@@ -158,7 +158,7 @@ function makeInputsOrOutputs(transferInfo, balanceInfo, multyAssets, nulsValueTo
     }
   }
   if (new _bignumber.BigNumber(balanceInfo.balance).lt(_newAmount)) {
-    throw new Error("Your balance of NULS is not enough.");
+    throw new Error("Your balance of NAI is not enough.");
   }
   var inputs = [{
     address: transferInfo.fromAddress,
@@ -369,14 +369,14 @@ function getPublic(privateKey) {
   return ec.keyFromPrivate(privateKey).getPublic(true, "hex");
 }
 function parseNULS(amount) {
-  var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 8;
+  var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 4;
   var a = new _bignumber.BigNumber(amount);
   var b = a.times(new _bignumber.BigNumber(10).pow(decimals));
   // return BigInt(b.toFixed(0));
   return b.integerValue(_bignumber.BigNumber.ROUND_DOWN);
 }
 function fromNULS(amount) {
-  var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 8;
+  var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 4;
   var a = new _bignumber.BigNumber(amount);
   var b = a.div(new _bignumber.BigNumber(10).pow(decimals));
   return parseFloat(b.toFixed(decimals, _bignumber.BigNumber.ROUND_DOWN));
